@@ -6,3 +6,10 @@
 .App > div {
   margin-right: 50px;
 }
+
+.todolist {
+  border: 1px solid purple;
+  border-radius: 5px;
+  background-color: #ffcdf7;
+  padding: 20px;
+}

@@ -25,7 +25,7 @@ export const  Todolist: React.FC<TodolistPropsType> = ({title, tasks, removeTask
     }
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        if(e.ctrlKey && e.charCode === 13) {addTask(NewTaskTitle); setNewTaskTitle('')}
+        if(e.charCode === 13) {addTask(NewTaskTitle); setNewTaskTitle('')}
     }
 
     const addNewTask = () => {

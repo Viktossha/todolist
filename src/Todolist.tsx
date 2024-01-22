@@ -32,9 +32,9 @@ export const  Todolist: React.FC<TodolistPropsType> = ({title, tasks, removeTask
         addTask(NewTaskTitle); setNewTaskTitle('')
     }
 
-    const onAllClickHandler = () => changeFilter('all')
-    const onActiveClickHandler = () => changeFilter('active')
-    const onCompletedClickHandler = () => changeFilter('completed')
+    const changeFilterHandlerCreator = (filter: FilterValuesType) => {
+        return () => changeFilter(filter)
+    }
 
     const tasksItem: JSX.Element = tasks.length !== 0
         ?
@@ -58,13 +58,13 @@ export const  Todolist: React.FC<TodolistPropsType> = ({title, tasks, removeTask
         <h3>{title}</h3>
         <div>
             <input value={NewTaskTitle} onChange={onNewTitleChangeHandler} onKeyPress={onKeyPressHandler}/>
-            <Button title={'+'} onClickHandler={addNewTask}/>
+            <Button title={'+'} onClickHandler={addNewTask} isDisabled={!NewTaskTitle}/>
         </div>
             {tasksItem}
         <div>
-            <Button title={'All'} onClickHandler={onAllClickHandler}/>
-            <Button title={'Active'} onClickHandler={onActiveClickHandler}/>
-            <Button title={'Completed'} onClickHandler={onCompletedClickHandler}/>
+            <Button title={'All'} onClickHandler={changeFilterHandlerCreator("all")}/>
+            <Button title={'Active'} onClickHandler={changeFilterHandlerCreator("active")}/>
+            <Button title={'Completed'} onClickHandler={changeFilterHandlerCreator("completed")}/>
             {/*<button onClick={() => {changeFilter('all')}}>All</button>*/}
             {/*<button onClick={() => {changeFilter('active')}}>Active</button>*/}
             {/*<button onClick={() => {changeFilter('completed')}}>Completed</button>*/}

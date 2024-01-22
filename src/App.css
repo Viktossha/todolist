@@ -13,3 +13,18 @@
   background-color: #ffcdf7;
   padding: 20px;
 }
+
+.error {
+  border: red 1px solid;
+}
+.error-message {
+  color: red;
+}
+
+.active-filter {
+  background-color: #ff77ea;
+}
+
+.is-done {
+  opacity: 0.5;
+}

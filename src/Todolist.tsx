@@ -44,9 +44,9 @@ export const  Todolist: React.FC<TodolistPropsType> = ({title, tasks, removeTask
         }
     }
 
-    const onAllClickHandler = () => changeFilter('all')
-    const onActiveClickHandler = () => changeFilter('active')
-    const onCompletedClickHandler = () => changeFilter('completed')
+    const changeFilterHandlerCreator = (filter: FilterValuesType) => {
+        return () => changeFilter(filter)
+    }
 
     const tasksItem: JSX.Element = tasks.length !== 0
         ?
@@ -72,14 +72,14 @@ export const  Todolist: React.FC<TodolistPropsType> = ({title, tasks, removeTask
         <h3>{title}</h3>
         <div>
             <input value={NewTaskTitle} onChange={onNewTitleChangeHandler} onKeyPress={onKeyPressHandler} className={error ? 'error' : ''}/>
-            <Button title={'+'} onClickHandler={addNewTask}/>
+            <Button title={'+'} onClickHandler={addNewTask} isDisabled={!NewTaskTitle}/>
             {error && <div className='error-message'>Field is required</div>}
         </div>
             {tasksItem}
         <div className={'btns-filter-block'}>
-            <Button classes={filter === 'all' ? 'active-filter' : ''} title={'All'} onClickHandler={onAllClickHandler}/>
-            <Button classes={filter === 'active' ? 'active-filter' : ''} title={'Active'} onClickHandler={onActiveClickHandler}/>
-            <Button classes={filter === 'completed' ? 'active-filter' : ''} title={'Completed'} onClickHandler={onCompletedClickHandler}/>
+            <Button classes={filter === 'all' ? 'active-filter' : ''} title={'All'} onClickHandler={changeFilterHandlerCreator("all")}/>
+            <Button classes={filter === 'active' ? 'active-filter' : ''} title={'Active'} onClickHandler={changeFilterHandlerCreator("active")}/>
+            <Button classes={filter === 'completed' ? 'active-filter' : ''} title={'Completed'} onClickHandler={changeFilterHandlerCreator("completed")}/>
             {/*<button onClick={() => {changeFilter('all')}}>All</button>*/}
             {/*<button onClick={() => {changeFilter('active')}}>Active</button>*/}
             {/*<button onClick={() => {changeFilter('completed')}}>Completed</button>*/}

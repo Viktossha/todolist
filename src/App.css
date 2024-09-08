@@ -16,7 +16,9 @@
 
 .error {
   border: red 1px solid;
+  outline: none;
 }
+
 .error-message {
   color: red;
 }
@@ -27,4 +29,9 @@
 
 .is-done {
   opacity: 0.5;
+}
+
+.btns-filter-block {
+  display: flex;
+  gap: 5px;
 }

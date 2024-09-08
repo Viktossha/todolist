@@ -76,10 +76,10 @@ export const  Todolist: React.FC<TodolistPropsType> = ({title, tasks, removeTask
             {error && <div className='error-message'>Field is required</div>}
         </div>
             {tasksItem}
-        <div>
-            <Button class={filter === 'all' ? 'active-filter' : ''} title={'All'} onClickHandler={onAllClickHandler}/>
-            <Button class={filter === 'active' ? 'active-filter' : ''} title={'Active'} onClickHandler={onActiveClickHandler}/>
-            <Button class={filter === 'completed' ? 'active-filter' : ''} title={'Completed'} onClickHandler={onCompletedClickHandler}/>
+        <div className={'btns-filter-block'}>
+            <Button classes={filter === 'all' ? 'active-filter' : ''} title={'All'} onClickHandler={onAllClickHandler}/>
+            <Button classes={filter === 'active' ? 'active-filter' : ''} title={'Active'} onClickHandler={onActiveClickHandler}/>
+            <Button classes={filter === 'completed' ? 'active-filter' : ''} title={'Completed'} onClickHandler={onCompletedClickHandler}/>
             {/*<button onClick={() => {changeFilter('all')}}>All</button>*/}
             {/*<button onClick={() => {changeFilter('active')}}>Active</button>*/}
             {/*<button onClick={() => {changeFilter('completed')}}>Completed</button>*/}

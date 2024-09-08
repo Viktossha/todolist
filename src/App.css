@@ -6,32 +6,3 @@
 .App > div {
   margin-right: 50px;
 }
-
-.todolist {
-  border: 1px solid purple;
-  border-radius: 5px;
-  background-color: #ffcdf7;
-  padding: 20px;
-}
-
-.error {
-  border: red 1px solid;
-  outline: none;
-}
-
-.error-message {
-  color: red;
-}
-
-.active-filter {
-  background-color: #ff77ea;
-}
-
-.is-done {
-  opacity: 0.5;
-}
-
-.btns-filter-block {
-  display: flex;
-  gap: 5px;
-}

@@ -1,28 +1,52 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import {TaskType, TodoList} from "./TodoList";
 
-function App() {
-    const todoListTitle_1 = 'What to learn'
-    const todoListTitle_2 = 'What to buy'
+export type FilterValuesType = 'all' | 'active' | 'completed'
 
-    const tasks_1: TaskType[] = [
+function App() {
+    const todoListTitle = 'What to learn'
+
+    const [tasks, setTasks] = React.useState<TaskType[]>([
         {id: 1, title: 'HTML', isDone: true},
         {id: 2, title: 'CSS', isDone: true},
         {id: 3, title: 'JS', isDone: false},
         {id: 4, title: 'REACT', isDone: false},
-    ]
+    ]) //useState метод объекта React
 
-    const tasks_2: TaskType[] = [
-        {id: 4, title: 'milk', isDone: true},
-        {id: 5, title: 'soap', isDone: false},
-        {id: 6, title: 'eggs', isDone: true},
-    ]
+    const [filter, setFilter] = useState<FilterValuesType>('all')
+
+    const removeTask = (taskId: number) => {
+        const updatedState = tasks.filter(t => t.id !== taskId)
+        setTasks(updatedState)
+        // tasks.pop()
+        // setTasks([...tasks])
+    }
+
+    const changeFilter = (filterValue: FilterValuesType) => {
+        setFilter(filterValue)
+    }
+
+    const getFilteredTasks = (allTasks: TaskType[], currentFilter: FilterValuesType): TaskType[] => {
+        switch (currentFilter) {
+            case "active":
+               return allTasks.filter(t => !t.isDone)
+            case "completed":
+                return allTasks.filter(t => t.isDone)
+            default:
+                return allTasks
+        }
+    }
+
+    const filteredTasks = getFilteredTasks(tasks, filter)
 
     return (
         <div className="App">
-            <TodoList title={todoListTitle_1} tasks={tasks_1}/>
-            <TodoList title={todoListTitle_2} tasks={tasks_2}/>
+            <TodoList title={todoListTitle}
+                      tasks={filteredTasks}
+                      removeTask={removeTask}
+                      changeFilter={changeFilter}
+            />
         </div>
     );
 }

@@ -13,3 +13,23 @@
   border-radius: 5px;
   padding: 15px;
 }
+
+.task {
+
+}
+
+.task-done {
+  opacity: 0.3;
+}
+
+.btn-active {
+  background-color: cornflowerblue;
+  color: lavender;
+  border: 1px solid lavender;
+  border-radius: 3px;
+}
+
+.input-error {
+  border: 1px solid red;
+  outline: none;
+}

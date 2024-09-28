@@ -4,13 +4,15 @@ import {TodoListHeader} from "./TodoListHeader";
 import {FilterValuesType} from "./App";
 
 type TodoListPropsType = {
+    todoListId: string
     title: string
     tasks: Array<TaskType>
     filter: FilterValuesType
-    removeTask: (taskId: string) => void
-    changeFilter: (filterValue: FilterValuesType) => void
-    addTask: (title: string) => void
-    changeTaskStatus: (taskId: string, newIsDoneValue: boolean) => void
+    removeTask: (todoListId: string, taskId: string) => void
+    changeFilter: (todoListId: string, filterValue: FilterValuesType) => void
+    addTask: (todoListId: string, title: string) => void
+    changeTaskStatus: (todoListId: string, taskId: string, newIsDoneValue: boolean) => void
+    removeTodoList: (todoListId: string) => void
 }
 
 export type TaskType = {
@@ -20,13 +22,15 @@ export type TaskType = {
 }
 
 export const TodoList = ({
+                             todoListId,
                              title,
                              tasks,
                              filter,
                              removeTask,
                              changeFilter,
                              addTask,
-                             changeTaskStatus
+                             changeTaskStatus,
+                             removeTodoList
                          }: TodoListPropsType) => {
     // const title = props.title
     // const tasks = props.tasks
@@ -42,13 +46,13 @@ export const TodoList = ({
         : <ul>
             {tasks.map((t: TaskType) => {
                 const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                    changeTaskStatus(t.id, e.currentTarget.checked)
+                    changeTaskStatus(todoListId, t.id, e.currentTarget.checked)
                 }
                 return <li key={t.id}><input type="checkbox"
                                              onChange={changeStatusHandler}
                                              checked={t.isDone}/>
                     <span className={t.isDone ? 'task-done' : 'task'}>{t.title}</span>
-                    <Button title={'x'} onClickHandler={() => removeTask(t.id)}/>
+                    <Button title={'x'} onClickHandler={() => removeTask(todoListId, t.id)}/>
                 </li>
             })}
         </ul>
@@ -56,7 +60,7 @@ export const TodoList = ({
     const addNewTaskHandler = () => {
         const trimmedTaskTitle = taskTitle.trim()
         if (trimmedTaskTitle) {
-            addTask(trimmedTaskTitle)
+            addTask(todoListId ,trimmedTaskTitle)
         } else {
             setInputError(true)
         }
@@ -74,15 +78,15 @@ export const TodoList = ({
         setTaskTitle(e.currentTarget.value)
     }
 
-    const changeFilterHandlerCreator = (filter: FilterValuesType) => {
-        return () => changeFilter(filter)
+    const changeFilterHandlerCreator = (todoListId: string, filter: FilterValuesType) => {
+        return () => changeFilter(todoListId, filter)
     }
 
     const isAddTaskPossible = taskTitle.length && taskTitle.length <= 15
 
     return (
         <div className="todolist">
-            <TodoListHeader title={title}/>
+            <TodoListHeader title={title} removeTodoList={removeTodoList} todoListId={todoListId}/>
             <div>
                 <input value={taskTitle}
                        className={inputError ? 'input-error' : ''}
@@ -96,13 +100,13 @@ export const TodoList = ({
             <div style={{display: 'flex', gap: '10px', justifyContent: 'center'}}>
                 <Button title={'All'}
                         classes={filter === 'all' ? 'btn-active' : ''}
-                        onClickHandler={changeFilterHandlerCreator('all')}/>
+                        onClickHandler={changeFilterHandlerCreator(todoListId, 'all')}/>
                 <Button title={'Active'}
                         classes={filter === 'active' ? 'btn-active' : ''}
-                        onClickHandler={changeFilterHandlerCreator('active')}/>
+                        onClickHandler={changeFilterHandlerCreator(todoListId, 'active')}/>
                 <Button title={'Completed'}
                         classes={filter === 'completed' ? 'btn-active' : ''}
-                        onClickHandler={changeFilterHandlerCreator('completed')}/>
+                        onClickHandler={changeFilterHandlerCreator(todoListId, 'completed')}/>
             </div>
         </div>
     );

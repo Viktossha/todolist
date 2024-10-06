@@ -44,7 +44,7 @@ export const TodoList = ({title, tasks, removeTask, changeFilter, addTask}: Todo
 
     return (
         <div className="todolist">
-            <TodoListHeader title={title} removeTodoList={() => {}} todoListId={''}/>
+            {/*<TodoListHeader title={title} removeTodoList={() => {}} todoListId={''}/>*/}
             <div>
                 <input ref={taskTitleInput}/>
                 <Button title={'+'} onClickHandler={addNewTask}/>

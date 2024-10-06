@@ -33,3 +33,8 @@
   border: 1px solid red;
   outline: none;
 }
+
+.todolist-title {
+  font-weight: bold;
+  font-size: 20px;
+}

@@ -50,6 +50,10 @@ export const TodoList = ({
         updateTodoListTitle(todoListId, newTitle)
     }
 
+    const updateTaskTitleHandler = (taskId: string, newTitle: string) => {
+        updateTaskTitle(todoListId, taskId, newTitle)
+    }
+
     //условный рендеринг
     const tasksList = tasks.length === 0
         ? <p>Список пуст</p>
@@ -59,15 +63,15 @@ export const TodoList = ({
                     changeTaskStatus(todoListId, t.id, e.currentTarget.checked)
                 }
 
-                const updateTaskTitleHandler = (newTitle: string) => {
-                    updateTaskTitle(todoListId, t.id, newTitle)
-                }
+                // const updateTaskTitleHandler = (newTitle: string) => {
+                //     updateTaskTitle(todoListId, t.id, newTitle)
+                // }
 
                 return <li key={t.id}><input type="checkbox"
                                              onChange={changeStatusHandler}
                                              checked={t.isDone}/>
                     {/*<span className={t.isDone ? 'task-done' : 'task'}>{t.title}</span>*/}
-                    <EditableSpan className={t.isDone ? 'task-done' : 'task'} oldTitle={t.title} updateTitle={updateTaskTitleHandler}/>
+                    <EditableSpan className={t.isDone ? 'task-done' : 'task'} oldTitle={t.title} updateTitle={(newTitle: string) => updateTaskTitleHandler(t.id, newTitle)}/>
                     <Button title={'x'} onClickHandler={() => removeTask(todoListId, t.id)}/>
                 </li>
             })}

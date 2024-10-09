@@ -1,9 +1,17 @@
 import React, {ChangeEvent, KeyboardEvent, useRef, useState} from 'react';
-import {Button} from "./Button";
+// import {Button} from "./Button";
 import {TodoListHeader} from "./TodoListHeader";
 import {FilterValuesType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Box from '@mui/material/Box';
+import {filterButtonsContainerSx, getListItemSX} from "./Todolist.styles";
 
 type TodoListPropsType = {
     todoListId: string
@@ -57,7 +65,7 @@ export const TodoList = ({
     //условный рендеринг
     const tasksList = tasks.length === 0
         ? <p>Список пуст</p>
-        : <ul>
+        : <List>
             {tasks.map((t: TaskType) => {
                 const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
                     changeTaskStatus(todoListId, t.id, e.currentTarget.checked)
@@ -67,15 +75,18 @@ export const TodoList = ({
                 //     updateTaskTitle(todoListId, t.id, newTitle)
                 // }
 
-                return <li key={t.id}><input type="checkbox"
-                                             onChange={changeStatusHandler}
-                                             checked={t.isDone}/>
-                    {/*<span className={t.isDone ? 'task-done' : 'task'}>{t.title}</span>*/}
-                    <EditableSpan className={t.isDone ? 'task-done' : 'task'} oldTitle={t.title} updateTitle={(newTitle: string) => updateTaskTitleHandler(t.id, newTitle)}/>
-                    <Button title={'x'} onClickHandler={() => removeTask(todoListId, t.id)}/>
-                </li>
+                return <ListItem key={t.id} sx={getListItemSX(t.isDone)}>
+                    <div>
+                        <Checkbox onChange={changeStatusHandler} checked={t.isDone}/>
+                        <EditableSpan oldTitle={t.title} updateTitle={(newTitle: string) => updateTaskTitleHandler(t.id, newTitle)}/>
+                    </div>
+
+                    <IconButton aria-label="delete" onClick={() => removeTask(todoListId, t.id)}>
+                        <DeleteIcon />
+                    </IconButton>
+                </ListItem>
             })}
-        </ul>
+        </List>
 
     // const addNewTaskHandler = () => {
     //     const trimmedTaskTitle = taskTitle.trim()
@@ -122,17 +133,11 @@ export const TodoList = ({
             {/*    {inputError && <div>Please, enter title</div>}*/}
             {/*</div>*/}
             {tasksList}
-            <div style={{display: 'flex', gap: '10px', justifyContent: 'center'}}>
-                <Button title={'All'}
-                        classes={filter === 'all' ? 'btn-active' : ''}
-                        onClickHandler={changeFilterHandlerCreator(todoListId, 'all')}/>
-                <Button title={'Active'}
-                        classes={filter === 'active' ? 'btn-active' : ''}
-                        onClickHandler={changeFilterHandlerCreator(todoListId, 'active')}/>
-                <Button title={'Completed'}
-                        classes={filter === 'completed' ? 'btn-active' : ''}
-                        onClickHandler={changeFilterHandlerCreator(todoListId, 'completed')}/>
-            </div>
+            <Box sx={filterButtonsContainerSx}>
+                <Button variant={filter === 'all' ? 'contained' : 'outlined'} onClick={changeFilterHandlerCreator(todoListId, 'all')}>All</Button>
+                <Button variant={filter === 'active' ? 'contained' : 'outlined'} onClick={changeFilterHandlerCreator(todoListId, 'active')}>Active</Button>
+                <Button variant={filter === 'completed' ? 'contained' : 'outlined'} onClick={changeFilterHandlerCreator(todoListId, 'completed')}>Completed</Button>
+            </Box>
         </div>
     );
 };

@@ -1,6 +1,8 @@
 import React from 'react';
 import {Button} from "./Button";
 import {EditableSpan} from "./EditableSpan";
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type TodoListHeaderPropsType = {
     todoListId: string
@@ -15,10 +17,11 @@ export const TodoListHeader = (props: TodoListHeaderPropsType) => {
     }
 
     return (
-        <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '15px'}}>
-            {/*<h3 style={{margin: '0'}}>{props.title}</h3>*/}
+        <div>
             <EditableSpan className={'todolist-title'} oldTitle={props.title} updateTitle={updateTodoListTitleHandler}/>
-            <Button title={'x'} onClickHandler={() => props.removeTodoList(props.todoListId)}/>
+            <IconButton aria-label="delete" onClick={() => props.removeTodoList(props.todoListId)}>
+                <DeleteIcon />
+            </IconButton>
         </div>
     );
 };

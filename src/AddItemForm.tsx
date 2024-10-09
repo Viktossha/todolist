@@ -1,5 +1,10 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {Button} from "./Button";
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
+import AddBoxIcon from '@mui/icons-material/AddBox'
+import IconButton from '@mui/material/IconButton'
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
@@ -34,13 +39,21 @@ export const AddItemForm = ({addItem}: AddItemFormPropsType) => {
 
     return (
         <div>
-            <input value={taskTitle}
-                   className={inputError ? 'input-error' : ''}
-                   onChange={setTaskTitleHandler}
-                   onKeyDown={onKeyDownAddNewTaskHandler}/>
-            <Button title={'+'} onClickHandler={addNewTaskHandler} isDisabled={!isAddTaskPossible}/>
+            <TextField
+                label="Enter a title"
+                variant={'outlined'}
+                className={inputError ? 'input-error' : ''}
+                error={inputError}
+                value={taskTitle}
+                size={'small'}
+                onChange={setTaskTitleHandler}
+                onKeyDown={onKeyDownAddNewTaskHandler}
+                helperText={inputError && 'Please, enter a title'}
+            />
+            <IconButton onClick={addNewTaskHandler} disabled={!isAddTaskPossible} color={'primary'}>
+                <AddBoxIcon/>
+            </IconButton>
             {taskTitle.length > 15 && <div>Task title is long</div>}
-            {inputError && <div>Please, enter title</div>}
         </div>
     );
 };

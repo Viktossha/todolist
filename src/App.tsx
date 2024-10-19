@@ -26,6 +26,10 @@ export type TodoListType = {
     filter: FilterValuesType
 }
 
+export type TasksType = {
+    [key: string]: TaskType[]
+}
+
 function App() {
 
     const [themeMode, setThemeMode] = useState<ThemeMode>('light')
@@ -63,7 +67,7 @@ function App() {
         { id: todoListID2, title: 'What to buy', filter: 'all' },
     ])
 
-    let [tasks, setTasks] = useState({
+    let [tasks, setTasks] = useState<TasksType>({
         [todoListID1]: [
             { id: v1(), title: 'HTML&CSS', isDone: true },
             { id: v1(), title: 'JS', isDone: true },

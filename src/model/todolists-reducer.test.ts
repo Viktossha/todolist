@@ -8,15 +8,23 @@ import {
 import { v1 } from 'uuid'
 import { TodoListType } from '../App'
 
-test('correct todolist should be removed', () => {
-    let todolistId1 = v1()
-    let todolistId2 = v1()
+let todolistId1: string
+let todolistId2: string
+let startState: TodoListType[]
 
-    // 1. Стартовый state
-    const startState: TodoListType[] = [
+beforeEach(() => {
+     todolistId1 = v1()
+     todolistId2 = v1()
+
+     startState = [
         { id: todolistId1, title: 'What to learn', filter: 'all' },
         { id: todolistId2, title: 'What to buy', filter: 'all' },
     ]
+})
+
+test('correct todolist should be removed', () => {
+
+    // 1. Стартовый state
 
     // 2. Действие
     // const action = {
@@ -37,14 +45,6 @@ test('correct todolist should be removed', () => {
 })
 
 test('correct todolist should be added', () => {
-    let todolistId1 = v1()
-    let todolistId2 = v1()
-
-    const startState: TodoListType[] = [
-        { id: todolistId1, title: 'What to learn', filter: 'all' },
-        { id: todolistId2, title: 'What to buy', filter: 'all' },
-    ]
-
     // const action = {
     //     type: 'ADD-TODOLIST',
     //     payload: {
@@ -59,14 +59,6 @@ test('correct todolist should be added', () => {
 })
 
 test('correct todolist should change its name', () => {
-    let todolistId1 = v1()
-    let todolistId2 = v1()
-
-    const startState: TodoListType[] = [
-        { id: todolistId1, title: 'What to learn', filter: 'all' },
-        { id: todolistId2, title: 'What to buy', filter: 'all' },
-    ]
-
     // const action = {
     //     type: 'CHANGE-TODOLIST-TITLE',
     //     payload: {
@@ -81,14 +73,6 @@ test('correct todolist should change its name', () => {
 })
 
 test('correct filter of todolist should be changed', () => {
-    let todolistId1 = v1()
-    let todolistId2 = v1()
-
-    const startState: TodoListType[] = [
-        { id: todolistId1, title: 'What to learn', filter: 'all' },
-        { id: todolistId2, title: 'What to buy', filter: 'all' },
-    ]
-
     // const action = {
     //     type: 'CHANGE-TODOLIST-FILTER',
     //     payload: {

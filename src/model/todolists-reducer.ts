@@ -40,7 +40,7 @@ export type ChangeTodolistFilterActionType = {
     }
 }
 
-type ActionsType =
+export type ActionsType =
     | RemoveTodolistActionType
     | AddTodolistActionType
     | ChangeTodolistTitleActionType

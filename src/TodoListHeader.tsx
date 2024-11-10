@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Button} from "./Button";
 import {EditableSpan} from "./EditableSpan";
 import IconButton from '@mui/material/IconButton';
@@ -12,9 +12,9 @@ type TodoListHeaderPropsType = {
 }
 export const TodoListHeader = (props: TodoListHeaderPropsType) => {
 
-    const updateTodoListTitleHandler = (newTitle: string) => {
+    const updateTodoListTitleHandler = useCallback((newTitle: string) => {
         props.updateTodoListTitle(newTitle)
-    }
+    }, [props.updateTodoListTitle])
 
     return (
         <div>

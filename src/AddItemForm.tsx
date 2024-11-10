@@ -10,7 +10,8 @@ type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
 
-export const AddItemForm = ({addItem}: AddItemFormPropsType) => {
+export const AddItemForm = React.memo(({addItem}: AddItemFormPropsType) => {
+    //console.log('AddItemForm')
     const [taskTitle, setTaskTitle] = useState('')
     const [inputError, setInputError] = useState<boolean>(false)
 
@@ -56,4 +57,4 @@ export const AddItemForm = ({addItem}: AddItemFormPropsType) => {
             {taskTitle.length > 15 && <div>Task title is long</div>}
         </div>
     );
-};
+});

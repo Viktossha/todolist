@@ -7,8 +7,8 @@ type EditableSpanPropsType = {
     className?: string
 }
 
-export const EditableSpan = ({oldTitle, className, updateTitle}: EditableSpanPropsType) => {
-
+export const EditableSpan = React.memo(({oldTitle, className, updateTitle}: EditableSpanPropsType) => {
+    //console.log('EditableSpan')
     const [edit, setEdit] = useState(false)
     const [newTitle, setNewTitle] = useState(oldTitle)
 
@@ -40,4 +40,4 @@ export const EditableSpan = ({oldTitle, className, updateTitle}: EditableSpanPro
             : <span className={className} onDoubleClick={editModeHandler}>{oldTitle}</span>
     )
         ;
-};
+});

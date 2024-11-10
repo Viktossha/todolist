@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useRef, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useCallback, useRef, useState} from 'react';
 // import {Button} from "./Button";
 import {TodoListHeader} from "./TodoListHeader";
 import {FilterValuesType} from "./App";
@@ -6,12 +6,13 @@ import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-import Button from '@mui/material/Button';
+import Button, {ButtonProps} from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Box from '@mui/material/Box';
 import {filterButtonsContainerSx, getListItemSX} from "./Todolist.styles";
+import {Task} from "./Task";
 
 type TodoListPropsType = {
     todoListId: string
@@ -33,7 +34,7 @@ export type TaskType = {
     isDone: boolean
 }
 
-export const TodoList = ({
+export const TodoList = React.memo(({
                              todoListId,
                              title,
                              tasks,
@@ -54,74 +55,47 @@ export const TodoList = ({
     // const [taskTitle, setTaskTitle] = useState('')
     // const [inputError, setInputError] = useState<boolean>(false)
 
-    const updateTodoListTitleHandler = (newTitle: string) => {
+    //console.log('Todolist')
+    const updateTodoListTitleHandler = useCallback((newTitle: string) => {
         updateTodoListTitle(todoListId, newTitle)
+    }, [updateTodoListTitle, todoListId])
+
+    const getFilteredTasks = (allTasks: TaskType[], currentFilter: FilterValuesType): TaskType[] => {
+        switch (currentFilter) {
+            case "active":
+                return allTasks.filter(t => !t.isDone)
+            case "completed":
+                return allTasks.filter(t => t.isDone)
+            default:
+                return allTasks
+        }
     }
 
-    const updateTaskTitleHandler = (taskId: string, newTitle: string) => {
-        updateTaskTitle(todoListId, taskId, newTitle)
-    }
+    tasks = getFilteredTasks(tasks, filter)
 
     //условный рендеринг
     const tasksList = tasks.length === 0
         ? <p>Список пуст</p>
         : <List>
             {tasks.map((t: TaskType) => {
-                const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                    changeTaskStatus(todoListId, t.id, e.currentTarget.checked)
-                }
-
-                // const updateTaskTitleHandler = (newTitle: string) => {
-                //     updateTaskTitle(todoListId, t.id, newTitle)
-                // }
-
-                return <ListItem key={t.id} sx={getListItemSX(t.isDone)}>
-                    <div>
-                        <Checkbox onChange={changeStatusHandler} checked={t.isDone}/>
-                        <EditableSpan oldTitle={t.title} updateTitle={(newTitle: string) => updateTaskTitleHandler(t.id, newTitle)}/>
-                    </div>
-
-                    <IconButton aria-label="delete" onClick={() => removeTask(todoListId, t.id)}>
-                        <DeleteIcon />
-                    </IconButton>
-                </ListItem>
+                return <Task key={t.id} task={t} todoListId={todoListId} removeTask={removeTask} changeTaskStatus={changeTaskStatus} updateTaskTitle={updateTaskTitle}/>
             })}
         </List>
 
-    // const addNewTaskHandler = () => {
-    //     const trimmedTaskTitle = taskTitle.trim()
-    //     if (trimmedTaskTitle) {
-    //         addTask(todoListId ,trimmedTaskTitle)
-    //     } else {
-    //         setInputError(true)
-    //     }
-    //     setTaskTitle('')
-    // }
-
-    // const onKeyDownAddNewTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    //     if (e.key === 'Enter' && isAddTaskPossible) {
-    //         addNewTaskHandler()
-    //     }
-    // }
-
-    // const setTaskTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    //     inputError && setInputError(false)
-    //     setTaskTitle(e.currentTarget.value)
-    // }
-
-    const changeFilterHandlerCreator = (todoListId: string, filter: FilterValuesType) => {
+    const changeFilterHandlerCreator = useCallback((todoListId: string, filter: FilterValuesType) => {
         return () => changeFilter(todoListId, filter)
-    }
+    }, [changeFilter, todoListId])
 
     // const isAddTaskPossible = taskTitle.length && taskTitle.length <= 15
 
-    const addTaskHandler = (title: string) => {
+    const addTaskHandler = useCallback((title: string) => {
         addTask(todoListId, title)
-    }
+    }, [addTask, todoListId])
 
     return (
         <div className="todolist">
-            <TodoListHeader title={title} removeTodoList={removeTodoList} todoListId={todoListId} updateTodoListTitle={updateTodoListTitleHandler}/>
+            <TodoListHeader title={title} removeTodoList={removeTodoList} todoListId={todoListId}
+                            updateTodoListTitle={updateTodoListTitleHandler}/>
             <AddItemForm addItem={addTaskHandler}/>
             {/*<div>*/}
             {/*    <input value={taskTitle}*/}
@@ -134,10 +108,20 @@ export const TodoList = ({
             {/*</div>*/}
             {tasksList}
             <Box sx={filterButtonsContainerSx}>
-                <Button variant={filter === 'all' ? 'contained' : 'outlined'} onClick={changeFilterHandlerCreator(todoListId, 'all')}>All</Button>
-                <Button variant={filter === 'active' ? 'contained' : 'outlined'} onClick={changeFilterHandlerCreator(todoListId, 'active')}>Active</Button>
-                <Button variant={filter === 'completed' ? 'contained' : 'outlined'} onClick={changeFilterHandlerCreator(todoListId, 'completed')}>Completed</Button>
+                <MyButton variant={filter === 'all' ? 'contained' : 'outlined'}
+                          onClick={changeFilterHandlerCreator(todoListId, 'all')} title={'All'}/>
+                <MyButton variant={filter === 'active' ? 'contained' : 'outlined'}
+                          onClick={changeFilterHandlerCreator(todoListId, 'active')} title={'Active'}/>
+                <MyButton variant={filter === 'completed' ? 'contained' : 'outlined'}
+                          onClick={changeFilterHandlerCreator(todoListId, 'completed')} title={'Completed'}/>
             </Box>
         </div>
     );
-};
+});
+
+type myButtonPropsType = {} & ButtonProps
+
+const MyButton = React.memo(({variant, title, onClick, ...rest}: myButtonPropsType) => {
+    //console.log('btn')
+    return <Button variant={variant} onClick={onClick} {...rest}>{title}</Button>
+})

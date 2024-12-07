@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {FilterValuesType, TodoListType} from "../App";
+import type {FilterValuesType, TodoListType} from "../../../app/App";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST'

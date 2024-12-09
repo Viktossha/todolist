@@ -5,7 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import {MenuButton} from "../MenuButton/MenuButton";
 import Switch from "@mui/material/Switch";
-import {getTheme} from "../../theme";
+import {getTheme} from "../../theme/theme";
 import {ChangeThemeAC} from "../../../app/app-reducer";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {selectThemeMode} from "../../../app/app-selectors";

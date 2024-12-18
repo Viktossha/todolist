@@ -4,13 +4,10 @@ import {EditableSpan} from '../common/components/EditableSpan/EditableSpan'
 import {AddItemForm} from "../common/components/AddItemForm/AddItemForm";
 import axios from "axios";
 
-const token = 'cd6b7ec6-86f3-4bd2-803a-472f3279a686'
-const apiKey = '98473ca9-fe98-40f3-895d-63e190bb2426'
-
 const configs = {
     headers: {
-        Authorization: `Bearer ${token}`,
-        'API-KEY': apiKey
+        Authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`,
+        'API-KEY': process.env.REACT_APP_API_KEY
     }
 }
 
@@ -21,7 +18,7 @@ export const AppHttpRequests = () => {
     useEffect(() => {
         axios.get<Todolist[]>('https://social-network.samuraijs.com/api/1.1/todo-lists', {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`
             }
         }).then(res => {
             const todolists = res.data

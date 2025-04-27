@@ -21,7 +21,7 @@ export const AppHttpRequests = () => {
   const [tasks, setTasks] = useState<{ [key: string]: Task[] }>({})
 
   useEffect(() => {
-    todolistsApi.getTodolist().then((res) => {
+    todolistsApi.getTodolists().then((res) => {
       const todolists = res.data
       setTodolists(todolists)
       todolists.forEach((tl) => {

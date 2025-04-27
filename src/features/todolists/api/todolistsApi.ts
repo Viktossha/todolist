@@ -3,7 +3,7 @@ import { instanse } from "common/instance/instanse"
 import type { Response } from "common/types"
 
 export const todolistsApi = {
-  getTodolist: () => {
+  getTodolists: () => {
     return instanse.get<Todolist[]>("todo-lists")
   },
   createTodolist: (title: string) => {

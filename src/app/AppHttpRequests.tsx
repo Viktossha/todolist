@@ -4,7 +4,7 @@ import { AddItemForm, EditableSpan } from "common/components"
 import axios from "axios"
 import { todolistsApi } from "../features/todolists/api/todolistsApi"
 import type { Todolist } from "../features/todolists/api/todolistsApi.types"
-import type { Task, UpdateTaskModel } from "../features/todolists/api/tasksApi.types"
+import type { DomainTask, UpdateTaskModel } from "../features/todolists/api/tasksApi.types"
 import type { Response } from "common/types"
 import { TaskStatus } from "../features/todolists/lib/enums"
 import { tasksApi } from "../features/todolists/api/tasksApi"
@@ -18,7 +18,7 @@ const configs = {
 
 export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<Todolist[]>([])
-  const [tasks, setTasks] = useState<{ [key: string]: Task[] }>({})
+  const [tasks, setTasks] = useState<{ [key: string]: DomainTask[] }>({})
 
   useEffect(() => {
     todolistsApi.getTodolists().then((res) => {
@@ -67,7 +67,7 @@ export const AppHttpRequests = () => {
     })
   }
 
-  const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>, task: Task) => {
+  const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>, task: DomainTask) => {
     const model: UpdateTaskModel = {
       title: task.title,
       description: task.description,
@@ -86,7 +86,7 @@ export const AppHttpRequests = () => {
     })
   }
 
-  const changeTaskTitleHandler = (title: string, task: Task) => {
+  const changeTaskTitleHandler = (title: string, task: DomainTask) => {
     const model: UpdateTaskModel = {
       title: title,
       description: task.description,
@@ -98,7 +98,7 @@ export const AppHttpRequests = () => {
 
     axios
       .put<
-        Response<{ item: Task }>
+        Response<{ item: DomainTask }>
       >(`https://social-network.samuraijs.com/api/1.1/todo-lists/${task.todoListId}/tasks/${task.id}`, model, configs)
       .then((res) => {
         const newTask = res.data.data.item
@@ -122,7 +122,7 @@ export const AppHttpRequests = () => {
 
             {/* Tasks */}
             {!!tasks[tl.id] &&
-              tasks[tl.id].map((task: Task) => {
+              tasks[tl.id].map((task: DomainTask) => {
                 return (
                   <div key={task.id}>
                     <Checkbox checked={task.status === 2} onChange={(e) => changeTaskStatusHandler(e, task)} />

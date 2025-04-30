@@ -1,6 +1,5 @@
 import React from "react"
 import "./App.css"
-import { TaskType } from "../features/todolists/ui/Todolists/Todolist/TodoList"
 import { ThemeProvider } from "@mui/material/styles"
 import CssBaseline from "@mui/material/CssBaseline"
 import { getTheme } from "common/theme"
@@ -8,6 +7,7 @@ import { Header } from "common/components"
 import { Main } from "./Main"
 import { useAppSelector } from "./hooks"
 import { selectThemeMode } from "./app-selectors"
+import type { DomainTask } from "../features/todolists/api/tasksApi.types"
 
 type ThemeMode = "dark" | "light"
 
@@ -20,7 +20,7 @@ export type FilterValuesType = "all" | "active" | "completed"
 // }
 
 export type TasksType = {
-  [key: string]: TaskType[]
+  [key: string]: DomainTask[]
 }
 
 function App() {

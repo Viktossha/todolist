@@ -12,11 +12,11 @@ type TodoListPropsType = {
   todolist: DomainTodolist
 }
 
-export type TaskType = {
-  id: string
-  title: string
-  isDone: boolean
-}
+// export type TaskType = {
+//   id: string
+//   title: string
+//   isDone: boolean
+// }
 
 export const TodoList = React.memo(({ todolist }: TodoListPropsType) => {
   let dispatch = useAppDispatch()

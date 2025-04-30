@@ -6,12 +6,13 @@ import IconButton from "@mui/material/IconButton"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from "../../../../../model/tasks-reducer"
 import { useAppDispatch } from "../../../../../../../app/hooks"
-import type { TaskType } from "../../TodoList"
 import { getListItemSX } from "./Task.styles"
 import type { DomainTodolist } from "../../../../../model/todolists-reducer"
+import type { DomainTask } from "../../../../../api/tasksApi.types"
+import { TaskStatus } from "../../../../../lib/enums"
 
 type TaskPropsType = {
-  task: TaskType
+  task: DomainTask
   todolist: DomainTodolist
 }
 
@@ -38,9 +39,9 @@ export const Task = React.memo(({ task, todolist }: TaskPropsType) => {
   )
 
   return (
-    <ListItem sx={getListItemSX(task.isDone)}>
+    <ListItem sx={getListItemSX(task.status === TaskStatus.Completed)}>
       <div>
-        <Checkbox onChange={changeTaskStatus} checked={task.isDone} />
+        <Checkbox onChange={changeTaskStatus} checked={task.status === TaskStatus.Completed} />
         <EditableSpan oldTitle={task.title} updateTitle={updateTaskTitle} />
       </div>
 

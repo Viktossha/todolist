@@ -4,7 +4,7 @@ import { instanse } from "common/instance"
 
 export const tasksApi = {
   getTasks(todolistId: string) {
-    return instanse.get<GetTasksResponse>(`${todolistId}/tasks`)
+    return instanse.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`)
   },
   createTask(payload: { title: string; todolistId: string }) {
     return instanse.post<Response<{ item: DomainTask }>>(`todo-lists/${payload.todolistId}/tasks`, {

@@ -16,8 +16,8 @@ export const tasksApi = {
   },
   updateTask(payload: { todolistId: string; taskId: string; model: UpdateTaskModel }) {
     return instanse.put<Response<{ item: DomainTask }>>(
-      `https://social-network.samuraijs.com/api/1.1/todo-lists/${payload.todolistId}/tasks/${payload.taskId}`,
-      { model: payload.model },
+      `todo-lists/${payload.todolistId}/tasks/${payload.taskId}`,
+      payload.model,
     )
   },
 }

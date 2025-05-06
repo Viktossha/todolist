@@ -1,6 +1,8 @@
 import { v1 } from "uuid"
 import type { FilterValuesType } from "../../../app/App"
 import type { Todolist } from "../api/todolistsApi.types"
+import { todolistsApi } from "../api/todolistsApi"
+import type { AppDispatch } from "../../../app/store"
 
 export type RemoveTodolistActionType = {
   type: "REMOVE-TODOLIST"
@@ -114,4 +116,11 @@ export const changeFilterAC = (id: string, filter: FilterValuesType) => {
       filter,
     },
   } as const
+}
+
+///Thunks
+export const fetchTodolistsTC = () => {
+  return (dispatch: AppDispatch) => {
+    todolistsApi.getTodolists().then((res) => dispatch(setTodolistsAC(res.data)))
+  }
 }

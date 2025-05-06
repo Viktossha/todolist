@@ -1,24 +1,31 @@
-import React from 'react';
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import {TodoList} from "./Todolist/TodoList";
-import {useAppSelector} from "../../../../app/hooks";
-import {selectTodolists} from "../../model/todolists-selectors";
+import React, { useEffect } from "react"
+import Grid from "@mui/material/Grid"
+import Paper from "@mui/material/Paper"
+import { TodoList } from "./Todolist/TodoList"
+import { useAppDispatch, useAppSelector } from "../../../../app/hooks"
+import { selectTodolists } from "../../model/todolists-selectors"
+import { fetchTodolistsTC } from "../../model/todolists-reducer"
 
 export const Todolists = () => {
+  let todoLists = useAppSelector(selectTodolists)
 
-    let todoLists = useAppSelector(selectTodolists)
+  const dispatch = useAppDispatch()
 
-    return (
-        <>
-            {todoLists.map(l => {
-                return (
-                    <Grid key={l.id} item sx={{margin: '20px'}}>
-                        <Paper elevation={3} sx={{padding: '20px'}}>
-                            <TodoList todolist={l}/>
-                        </Paper>
-                    </Grid>)
-            })}
-        </>
-    );
-};
+  useEffect(() => {
+    dispatch(fetchTodolistsTC())
+  }, [])
+
+  return (
+    <>
+      {todoLists.map((l) => {
+        return (
+          <Grid key={l.id} item sx={{ margin: "20px" }}>
+            <Paper elevation={3} sx={{ padding: "20px" }}>
+              <TodoList todolist={l} />
+            </Paper>
+          </Grid>
+        )
+      })}
+    </>
+  )
+}

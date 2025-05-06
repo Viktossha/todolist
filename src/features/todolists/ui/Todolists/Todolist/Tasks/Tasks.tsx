@@ -1,11 +1,13 @@
-import React from "react"
+import React, { useEffect } from "react"
 import List from "@mui/material/List"
 import { Task } from "./Task/Task"
-import { TaskType } from "../TodoList"
 import { FilterValuesType } from "../../../../../../app/App"
-import { useAppSelector } from "../../../../../../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../../../../../app/hooks"
 import { selectTasks } from "../../../../model/tasks-selectors"
 import type { DomainTodolist } from "../../../../model/todolists-reducer"
+import { fetchTasksTC } from "../../../../model/tasks-reducer"
+import type { DomainTask } from "../../../../api/tasksApi.types"
+import { TaskStatus } from "../../../../lib/enums"
 
 type Props = {
   todolist: DomainTodolist
@@ -14,12 +16,18 @@ type Props = {
 export const Tasks = ({ todolist }: Props) => {
   let tasks = useAppSelector(selectTasks)
 
-  const getFilteredTasks = (allTasks: TaskType[], currentFilter: FilterValuesType): TaskType[] => {
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(fetchTasksTC(todolist.id))
+  }, [])
+
+  const getFilteredTasks = (allTasks: DomainTask[], currentFilter: FilterValuesType): DomainTask[] => {
     switch (currentFilter) {
       case "active":
-        return allTasks.filter((t) => !t.isDone)
+        return allTasks.filter((t) => t.status === TaskStatus.New)
       case "completed":
-        return allTasks.filter((t) => t.isDone)
+        return allTasks.filter((t) => t.status === TaskStatus.Completed)
       default:
         return allTasks
     }
@@ -29,11 +37,11 @@ export const Tasks = ({ todolist }: Props) => {
 
   return (
     <>
-      {tasksForTodolists.length === 0 ? (
+      {tasksForTodolists?.length === 0 ? (
         <p>Список пуст</p>
       ) : (
         <List>
-          {tasksForTodolists.map((t: TaskType) => {
+          {tasksForTodolists?.map((t: DomainTask) => {
             return <Task key={t.id} task={t} todolist={todolist} />
           })}
         </List>

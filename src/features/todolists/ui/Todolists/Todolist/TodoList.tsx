@@ -4,7 +4,7 @@ import { TodoListHeader } from "./TodoListHeader/TodoListHeader"
 import { AddItemForm } from "common/components"
 import { Tasks } from "./Tasks/Tasks"
 import { FilterTasksButtons } from "./FilterTasksButtons/FilterTasksButtons"
-import { addTaskAC } from "../../../model/tasks-reducer"
+import { addTaskTC } from "../../../model/tasks-reducer"
 import { useAppDispatch } from "../../../../../app/hooks"
 import type { DomainTodolist } from "../../../model/todolists-reducer"
 
@@ -23,7 +23,7 @@ export const TodoList = React.memo(({ todolist }: TodoListPropsType) => {
 
   const addTask = useCallback(
     (title: string) => {
-      dispatch(addTaskAC(todolist.id, title))
+      dispatch(addTaskTC(todolist.id, title))
     },
     [dispatch],
   )

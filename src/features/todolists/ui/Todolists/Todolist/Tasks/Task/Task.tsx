@@ -4,7 +4,7 @@ import Checkbox from "@mui/material/Checkbox"
 import { EditableSpan } from "common/components"
 import IconButton from "@mui/material/IconButton"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { removeTaskTC, updateTaskStatusTC, updateTaskTitleTC } from "../../../../../model/tasks-reducer"
+import { removeTaskTC, updateTaskTC } from "../../../../../model/tasks-reducer"
 import { useAppDispatch } from "../../../../../../../app/hooks"
 import { getListItemSX } from "./Task.styles"
 import type { DomainTodolist } from "../../../../../model/todolists-reducer"
@@ -27,7 +27,7 @@ export const Task = React.memo(({ task, todolist }: TaskPropsType) => {
     (e: ChangeEvent<HTMLInputElement>) => {
       const status = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
       const newTask = { ...task, status }
-      dispatch(updateTaskStatusTC(newTask))
+      dispatch(updateTaskTC(newTask))
     },
     [dispatch],
   )
@@ -35,7 +35,7 @@ export const Task = React.memo(({ task, todolist }: TaskPropsType) => {
   const updateTaskTitle = useCallback(
     (newTitle: string) => {
       const newTask = { ...task, title: newTitle }
-      dispatch(updateTaskTitleTC(newTask))
+      dispatch(updateTaskTC(newTask))
     },
     [dispatch],
   )

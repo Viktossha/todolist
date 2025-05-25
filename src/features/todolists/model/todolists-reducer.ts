@@ -14,8 +14,7 @@ export type RemoveTodolistActionType = {
 export type AddTodolistActionType = {
   type: "ADD-TODOLIST"
   payload: {
-    title: string
-    todolistId: string
+    todolist: Todolist
   }
 }
 
@@ -59,10 +58,8 @@ export const todolistsReducer = (state = initialTodolistsState, action: ActionsT
       return state.filter((l) => l.id !== action.payload.id) // логика по удалению тудулиста
     }
     case "ADD-TODOLIST": {
-      return [
-        ...state,
-        { id: action.payload.todolistId, title: action.payload.title, filter: "all", addedDate: "", order: 0 },
-      ] // логика по добавлению тудулиста
+      const newTodolist = action.payload.todolist
+      return [{ ...newTodolist, filter: "all" }, ...state] // логика по добавлению тудулиста
     }
     case "CHANGE-TODOLIST-TITLE": {
       return state.map((el) => (el.id === action.payload.id ? { ...el, title: action.payload.title } : el))
@@ -88,12 +85,11 @@ export const removeTodoListAC = (id: string) => {
   } as const
 }
 
-export const addTodoListAC = (title: string) => {
+export const addTodoListAC = (todolist: Todolist) => {
   return {
     type: "ADD-TODOLIST",
     payload: {
-      title,
-      todolistId: v1(),
+      todolist,
     },
   } as const
 }
@@ -122,5 +118,23 @@ export const changeFilterAC = (id: string, filter: FilterValuesType) => {
 export const fetchTodolistsTC = () => {
   return (dispatch: AppDispatch) => {
     todolistsApi.getTodolists().then((res) => dispatch(setTodolistsAC(res.data)))
+  }
+}
+
+export const addTodolistTC = (title: string) => {
+  return (dispatch: AppDispatch) => {
+    todolistsApi.createTodolist(title).then((res) => dispatch(addTodoListAC(res.data.data.item)))
+  }
+}
+
+export const removeTodolistTC = (id: string) => {
+  return (dispatch: AppDispatch) => {
+    todolistsApi.deleteTodolist(id).then(() => dispatch(removeTodoListAC(id)))
+  }
+}
+
+export const updateTodolistTitleTC = (arg: { id: string; title: string }) => {
+  return (dispatch: AppDispatch) => {
+    todolistsApi.updateTodolist(arg).then((res) => dispatch(updateTodoListTitleAC(arg.id, arg.title)))
   }
 }

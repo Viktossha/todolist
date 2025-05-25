@@ -2,7 +2,12 @@ import React, { useCallback } from "react"
 import { EditableSpan } from "common/components"
 import IconButton from "@mui/material/IconButton"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { type DomainTodolist, removeTodoListAC, updateTodoListTitleAC } from "../../../../model/todolists-reducer"
+import {
+  type DomainTodolist,
+  removeTodolistTC,
+  updateTodoListTitleAC,
+  updateTodolistTitleTC,
+} from "../../../../model/todolists-reducer"
 import { useAppDispatch } from "../../../../../../app/hooks"
 import styles from "./TodoListHeader.module.css"
 
@@ -14,13 +19,13 @@ export const TodoListHeader = ({ todolist }: TodoListHeaderPropsType) => {
 
   const updateTodoListTitle = useCallback(
     (newTitle: string) => {
-      dispatch(updateTodoListTitleAC(todolist.id, newTitle))
+      dispatch(updateTodolistTitleTC({ id: todolist.id, title: newTitle }))
     },
     [dispatch],
   )
 
   const removeTodoList = useCallback(() => {
-    dispatch(removeTodoListAC(todolist.id))
+    dispatch(removeTodolistTC(todolist.id))
   }, [dispatch])
 
   return (

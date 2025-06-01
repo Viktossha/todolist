@@ -2,7 +2,9 @@ import type { FilterValuesType } from "../../../app/App"
 import type { Todolist } from "../api/todolistsApi.types"
 import { todolistsApi } from "../api/todolistsApi"
 import type { AppDispatch } from "../../../app/store"
-import { type RequestStatus, setAppStatusAC } from "../../../app/app-reducer"
+import { type RequestStatus, setAppErrorAC, setAppStatusAC } from "../../../app/app-reducer"
+import { ResultCode } from "common/enums/enums"
+import { addTaskAC } from "./tasks-reducer"
 
 export type RemoveTodolistActionType = {
   type: "REMOVE-TODOLIST"
@@ -146,10 +148,21 @@ export const fetchTodolistsTC = () => {
 export const addTodolistTC = (title: string) => {
   return (dispatch: AppDispatch) => {
     dispatch(setAppStatusAC("loading"))
-    todolistsApi.createTodolist(title).then((res) => {
-      dispatch(addTodoListAC(res.data.data.item))
-      dispatch(setAppStatusAC("succeeded"))
-    })
+    todolistsApi
+      .createTodolist(title)
+      .then((res) => {
+        if (res.data.resultCode === ResultCode.Success) {
+          dispatch(addTodoListAC(res.data.data.item))
+          dispatch(setAppStatusAC("succeeded"))
+        } else {
+          dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : "Some error occurred"))
+          dispatch(setAppStatusAC("failed"))
+        }
+      })
+      .catch((err) => {
+        dispatch(setAppErrorAC(err.message))
+        dispatch(setAppStatusAC("failed"))
+      })
   }
 }
 

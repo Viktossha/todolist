@@ -5,6 +5,7 @@ import type { AppDispatch } from "../../../app/store"
 import { type RequestStatus, setAppErrorAC, setAppStatusAC } from "../../../app/app-reducer"
 import { ResultCode } from "common/enums/enums"
 import { addTaskAC } from "./tasks-reducer"
+import { handleServerAppError, handleServerNetworkError } from "common/utils"
 
 export type RemoveTodolistActionType = {
   type: "REMOVE-TODOLIST"
@@ -155,13 +156,11 @@ export const addTodolistTC = (title: string) => {
           dispatch(addTodoListAC(res.data.data.item))
           dispatch(setAppStatusAC("succeeded"))
         } else {
-          dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : "Some error occurred"))
-          dispatch(setAppStatusAC("failed"))
+          handleServerAppError(dispatch, res.data)
         }
       })
       .catch((err) => {
-        dispatch(setAppErrorAC(err.message))
-        dispatch(setAppStatusAC("failed"))
+        handleServerNetworkError(err, dispatch)
       })
   }
 }

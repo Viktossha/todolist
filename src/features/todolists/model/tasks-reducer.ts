@@ -6,6 +6,7 @@ import type { DomainTask } from "../api/tasksApi.types"
 import { TaskStatus } from "../lib/enums"
 import { setAppErrorAC, setAppStatusAC } from "../../../app/app-reducer"
 import { ResultCode } from "common/enums/enums"
+import { handleServerNetworkError, handleServerAppError } from "common/utils"
 
 export type RemoveTaskActionType = {
   type: "REMOVE-TASK"
@@ -162,13 +163,11 @@ export const addTaskTC = (todolistId: string, title: string) => {
           dispatch(addTaskAC(res.data.data.item))
           dispatch(setAppStatusAC("succeeded"))
         } else {
-          dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : "Some error occurred"))
-          dispatch(setAppStatusAC("failed"))
+          handleServerAppError(dispatch, res.data)
         }
       })
       .catch((err) => {
-        dispatch(setAppErrorAC(err.message))
-        dispatch(setAppStatusAC("failed"))
+        handleServerNetworkError(err, dispatch)
       })
   }
 }

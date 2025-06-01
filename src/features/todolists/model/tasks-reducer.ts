@@ -4,7 +4,8 @@ import type { AppDispatch } from "../../../app/store"
 import { tasksApi } from "../api/tasksApi"
 import type { DomainTask } from "../api/tasksApi.types"
 import { TaskStatus } from "../lib/enums"
-import { setAppStatusAC } from "../../../app/app-reducer"
+import { setAppErrorAC, setAppStatusAC } from "../../../app/app-reducer"
+import { ResultCode } from "common/enums/enums"
 
 export type RemoveTaskActionType = {
   type: "REMOVE-TASK"
@@ -155,8 +156,13 @@ export const addTaskTC = (todolistId: string, title: string) => {
   return (dispatch: AppDispatch) => {
     dispatch(setAppStatusAC("loading"))
     tasksApi.createTask({ title, todolistId }).then((res) => {
-      dispatch(addTaskAC(res.data.data.item))
-      dispatch(setAppStatusAC("succeeded"))
+      if (res.data.resultCode === ResultCode.Success) {
+        dispatch(addTaskAC(res.data.data.item))
+        dispatch(setAppStatusAC("succeeded"))
+      } else {
+        dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : "Some error occurred"))
+        dispatch(setAppStatusAC("failed"))
+      }
     })
   }
 }

@@ -4,6 +4,7 @@ import type { AppDispatch } from "../../../app/store"
 import { tasksApi } from "../api/tasksApi"
 import type { DomainTask } from "../api/tasksApi.types"
 import { TaskStatus } from "../lib/enums"
+import { setAppStatusAC } from "../../../app/app-reducer"
 
 export type RemoveTaskActionType = {
   type: "REMOVE-TASK"
@@ -132,19 +133,31 @@ export const updateTaskAC = (task: DomainTask): updateTaskActionType => {
 //Thunks
 export const fetchTasksTC = (todolistId: string) => {
   return (dispatch: AppDispatch) => {
-    tasksApi.getTasks(todolistId).then((res) => dispatch(setTasksAC(todolistId, res.data.items)))
+    dispatch(setAppStatusAC("loading"))
+    tasksApi.getTasks(todolistId).then((res) => {
+      dispatch(setTasksAC(todolistId, res.data.items))
+      dispatch(setAppStatusAC("succeeded"))
+    })
   }
 }
 
 export const removeTaskTC = (todolistId: string, taskId: string) => {
   return (dispatch: AppDispatch) => {
-    tasksApi.deleteTask({ todolistId, taskId }).then((res) => dispatch(removeTaskAC(todolistId, taskId)))
+    dispatch(setAppStatusAC("loading"))
+    tasksApi.deleteTask({ todolistId, taskId }).then((res) => {
+      dispatch(removeTaskAC(todolistId, taskId))
+      dispatch(setAppStatusAC("succeeded"))
+    })
   }
 }
 
 export const addTaskTC = (todolistId: string, title: string) => {
   return (dispatch: AppDispatch) => {
-    tasksApi.createTask({ title, todolistId }).then((res) => dispatch(addTaskAC(res.data.data.item)))
+    dispatch(setAppStatusAC("loading"))
+    tasksApi.createTask({ title, todolistId }).then((res) => {
+      dispatch(addTaskAC(res.data.data.item))
+      dispatch(setAppStatusAC("succeeded"))
+    })
   }
 }
 

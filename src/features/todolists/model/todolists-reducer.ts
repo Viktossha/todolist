@@ -1,8 +1,8 @@
-import { v1 } from "uuid"
 import type { FilterValuesType } from "../../../app/App"
 import type { Todolist } from "../api/todolistsApi.types"
 import { todolistsApi } from "../api/todolistsApi"
 import type { AppDispatch } from "../../../app/store"
+import { setAppStatusAC } from "../../../app/app-reducer"
 
 export type RemoveTodolistActionType = {
   type: "REMOVE-TODOLIST"
@@ -117,19 +117,31 @@ export const changeFilterAC = (id: string, filter: FilterValuesType) => {
 ///Thunks
 export const fetchTodolistsTC = () => {
   return (dispatch: AppDispatch) => {
-    todolistsApi.getTodolists().then((res) => dispatch(setTodolistsAC(res.data)))
+    dispatch(setAppStatusAC("loading"))
+    todolistsApi.getTodolists().then((res) => {
+      dispatch(setTodolistsAC(res.data))
+      dispatch(setAppStatusAC("succeeded"))
+    })
   }
 }
 
 export const addTodolistTC = (title: string) => {
   return (dispatch: AppDispatch) => {
-    todolistsApi.createTodolist(title).then((res) => dispatch(addTodoListAC(res.data.data.item)))
+    dispatch(setAppStatusAC("loading"))
+    todolistsApi.createTodolist(title).then((res) => {
+      dispatch(addTodoListAC(res.data.data.item))
+      dispatch(setAppStatusAC("succeeded"))
+    })
   }
 }
 
 export const removeTodolistTC = (id: string) => {
   return (dispatch: AppDispatch) => {
-    todolistsApi.deleteTodolist(id).then(() => dispatch(removeTodoListAC(id)))
+    dispatch(setAppStatusAC("loading"))
+    todolistsApi.deleteTodolist(id).then(() => {
+      dispatch(removeTodoListAC(id))
+      dispatch(setAppStatusAC("succeeded"))
+    })
   }
 }
 

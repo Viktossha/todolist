@@ -3,7 +3,7 @@ import "./App.css"
 import { ThemeProvider } from "@mui/material/styles"
 import CssBaseline from "@mui/material/CssBaseline"
 import { getTheme } from "common/theme"
-import { Header } from "common/components"
+import { ErrorSnackbar, Header } from "common/components"
 import { Main } from "./Main"
 import { useAppSelector } from "./hooks"
 import { selectThemeMode } from "./app-selectors"
@@ -33,6 +33,7 @@ function App() {
       <CssBaseline />
       <Header />
       <Main />
+      <ErrorSnackbar />
     </ThemeProvider>
   )
 }

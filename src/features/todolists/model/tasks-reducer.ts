@@ -155,15 +155,21 @@ export const removeTaskTC = (todolistId: string, taskId: string) => {
 export const addTaskTC = (todolistId: string, title: string) => {
   return (dispatch: AppDispatch) => {
     dispatch(setAppStatusAC("loading"))
-    tasksApi.createTask({ title, todolistId }).then((res) => {
-      if (res.data.resultCode === ResultCode.Success) {
-        dispatch(addTaskAC(res.data.data.item))
-        dispatch(setAppStatusAC("succeeded"))
-      } else {
-        dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : "Some error occurred"))
+    tasksApi
+      .createTask({ title, todolistId })
+      .then((res) => {
+        if (res.data.resultCode === ResultCode.Success) {
+          dispatch(addTaskAC(res.data.data.item))
+          dispatch(setAppStatusAC("succeeded"))
+        } else {
+          dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : "Some error occurred"))
+          dispatch(setAppStatusAC("failed"))
+        }
+      })
+      .catch((err) => {
+        dispatch(setAppErrorAC(err.message))
         dispatch(setAppStatusAC("failed"))
-      }
-    })
+      })
   }
 }
 

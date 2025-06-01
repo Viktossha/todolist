@@ -31,7 +31,7 @@ export const TodoListHeader = ({ todolist }: TodoListHeaderPropsType) => {
   return (
     <div>
       <EditableSpan className={styles.todolistTitle} oldTitle={todolist.title} updateTitle={updateTodoListTitle} />
-      <IconButton aria-label="delete" onClick={removeTodoList}>
+      <IconButton aria-label="delete" onClick={removeTodoList} disabled={todolist.entityStatus === "loading"}>
         <DeleteIcon />
       </IconButton>
     </div>

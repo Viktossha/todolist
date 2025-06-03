@@ -178,6 +178,10 @@ export const removeTodolistTC = (id: string) => {
 
 export const updateTodolistTitleTC = (arg: { id: string; title: string }) => {
   return (dispatch: AppDispatch) => {
-    todolistsApi.updateTodolist(arg).then((res) => dispatch(updateTodoListTitleAC(arg.id, arg.title)))
+    dispatch(setAppStatusAC("loading"))
+    todolistsApi.updateTodolist(arg).then((res) => {
+      dispatch(updateTodoListTitleAC(arg.id, arg.title))
+      dispatch(setAppStatusAC("succeeded"))
+    })
   }
 }

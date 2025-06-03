@@ -182,9 +182,10 @@ export const updateTaskTC = (task: DomainTask) => {
       deadline: task.deadline,
       status: task.status,
     }
-
-    tasksApi
-      .updateTask({ taskId: task.id, todolistId: task.todoListId, model })
-      .then((res) => dispatch(updateTaskAC(task)))
+    dispatch(setAppStatusAC("loading"))
+    tasksApi.updateTask({ taskId: task.id, todolistId: task.todoListId, model }).then((res) => {
+      dispatch(updateTaskAC(task))
+      dispatch(setAppStatusAC("succeeded"))
+    })
   }
 }

@@ -2,12 +2,7 @@ import React, { useCallback } from "react"
 import { EditableSpan } from "common/components"
 import IconButton from "@mui/material/IconButton"
 import DeleteIcon from "@mui/icons-material/Delete"
-import {
-  type DomainTodolist,
-  removeTodolistTC,
-  updateTodoListTitleAC,
-  updateTodolistTitleTC,
-} from "../../../../model/todolists-reducer"
+import { type DomainTodolist, removeTodolistTC, updateTodolistTitleTC } from "../../../../model/todolists-reducer"
 import { useAppDispatch } from "../../../../../../app/hooks"
 import styles from "./TodoListHeader.module.css"
 
@@ -30,7 +25,12 @@ export const TodoListHeader = ({ todolist }: TodoListHeaderPropsType) => {
 
   return (
     <div>
-      <EditableSpan className={styles.todolistTitle} oldTitle={todolist.title} updateTitle={updateTodoListTitle} />
+      <EditableSpan
+        className={styles.todolistTitle}
+        oldTitle={todolist.title}
+        updateTitle={updateTodoListTitle}
+        disabled={todolist.entityStatus === "loading"}
+      />
       <IconButton aria-label="delete" onClick={removeTodoList} disabled={todolist.entityStatus === "loading"}>
         <DeleteIcon />
       </IconButton>

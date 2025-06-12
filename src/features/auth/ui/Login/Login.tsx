@@ -7,10 +7,15 @@ import FormLabel from "@mui/material/FormLabel"
 import Grid from "@mui/material/Grid"
 import TextField from "@mui/material/TextField"
 import { getTheme } from "common/theme"
-import { useAppSelector } from "../../../../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../../../app/hooks"
 import { selectThemeMode } from "../../../../app/app-selectors"
 import { Controller, type SubmitHandler, useForm } from "react-hook-form"
 import s from "./Login.module.css"
+import { loginTC } from "../../model/auth-reducer"
+import { useNavigate } from "react-router"
+import { selectIsLoggedIn } from "../../model/auth-selector"
+import { Path } from "common/routing"
+import { useEffect } from "react"
 
 type Inputs = {
   email: string
@@ -20,7 +25,17 @@ type Inputs = {
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
   const theme = getTheme(themeMode)
+
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate(Path.Main)
+    }
+  }, [isLoggedIn])
 
   const {
     register,
@@ -31,7 +46,7 @@ export const Login = () => {
   } = useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false } })
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data)
+    dispatch(loginTC(data))
     reset()
   }
 

@@ -9,10 +9,31 @@ import TextField from "@mui/material/TextField"
 import { getTheme } from "common/theme"
 import { useAppSelector } from "../../../../app/hooks"
 import { selectThemeMode } from "../../../../app/app-selectors"
+import { Controller, type SubmitHandler, useForm } from "react-hook-form"
+import s from "./Login.module.css"
+
+type Inputs = {
+  email: string
+  password: string
+  rememberMe: boolean
+}
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
   const theme = getTheme(themeMode)
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false } })
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data)
+    reset()
+  }
 
   return (
     <Grid container justifyContent={"center"}>
@@ -38,14 +59,38 @@ export const Login = () => {
               <b>Password:</b> free
             </p>
           </FormLabel>
-          <FormGroup>
-            <TextField label="Email" margin="normal" />
-            <TextField type="password" label="Password" margin="normal" />
-            <FormControlLabel label={"Remember me"} control={<Checkbox />} />
-            <Button type={"submit"} variant={"contained"} color={"primary"}>
-              Login
-            </Button>
-          </FormGroup>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <FormGroup>
+              <TextField
+                label="Email"
+                margin="normal"
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                    message: "Incorrect email address",
+                  },
+                })}
+              />
+              {errors.email && <span className={s.errorMessage}>{errors.email.message}</span>}
+              <TextField type="password" label="Password" margin="normal" {...register("password")} />
+              <FormControlLabel
+                label={"Remember me"}
+                control={
+                  <Controller
+                    name={"rememberMe"}
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <Checkbox onChange={(e) => onChange(e.target.checked)} checked={value} />
+                    )}
+                  />
+                }
+              />
+              <Button type={"submit"} variant={"contained"} color={"primary"}>
+                Login
+              </Button>
+            </FormGroup>
+          </form>
         </FormControl>
       </Grid>
     </Grid>

@@ -1,1 +1,1 @@
-export * from "./instanse"
+export * from "./instance"

@@ -1,5 +1,5 @@
 import { TasksType } from "../../../app/App"
-import { AddTodolistActionType, RemoveTodolistActionType } from "./todolists-reducer"
+import { AddTodolistActionType, type clearTodosDataActionType, RemoveTodolistActionType } from "./todolists-reducer"
 import type { AppDispatch } from "../../../app/store"
 import { tasksApi } from "../api/tasksApi"
 import type { DomainTask } from "../api/tasksApi.types"
@@ -44,6 +44,7 @@ type ActionsType =
   | AddTodolistActionType
   | RemoveTodolistActionType
   | setTasksActionType
+  | clearTodosDataActionType
 
 export let initialTasksState: TasksType = {}
 
@@ -64,7 +65,6 @@ export const tasksReducer = (state = initialTasksState, action: ActionsType): Ta
       let newTask: DomainTask = action.payload.task
       return { ...state, [newTask.todoListId]: [newTask, ...state[newTask.todoListId]] }
     }
-    //TODO:: проверить этот кейс
     case "UPDATE-TASK": {
       const newTask = action.payload.task
       return {
@@ -87,6 +87,9 @@ export const tasksReducer = (state = initialTasksState, action: ActionsType): Ta
       let copyState = { ...state }
       delete copyState[action.payload.id]
       return copyState
+    }
+    case "CLEAR-TODOS": {
+      return {}
     }
     default:
       return state

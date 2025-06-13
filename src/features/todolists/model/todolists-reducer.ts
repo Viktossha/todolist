@@ -38,6 +38,7 @@ export type ChangeTodolistFilterActionType = {
 
 export type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
 export type ChangeTodolistEntityStatusActionType = ReturnType<typeof changeTodolistEntityStatusAC>
+export type clearTodosDataActionType = ReturnType<typeof clearTodosDataAC>
 
 export type DomainTodolist = Todolist & {
   filter: FilterValuesType
@@ -51,6 +52,7 @@ export type ActionsType =
   | ChangeTodolistFilterActionType
   | SetTodolistsActionType
   | ChangeTodolistEntityStatusActionType
+  | clearTodosDataActionType
 
 export let initialTodolistsState: DomainTodolist[] = []
 
@@ -76,6 +78,9 @@ export const todolistsReducer = (state = initialTodolistsState, action: ActionsT
       return state.map((el) =>
         el.id === action.payload.id ? { ...el, entityStatus: action.payload.entityStatus } : el,
       )
+    }
+    case "CLEAR-TODOS": {
+      return []
     }
     default:
       return state
@@ -131,6 +136,11 @@ export const changeTodolistEntityStatusAC = (id: string, entityStatus: RequestSt
       id,
       entityStatus,
     },
+  } as const
+}
+export const clearTodosDataAC = () => {
+  return {
+    type: "CLEAR-TODOS",
   } as const
 }
 

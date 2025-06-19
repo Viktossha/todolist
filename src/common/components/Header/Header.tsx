@@ -6,12 +6,12 @@ import MenuIcon from "@mui/icons-material/Menu"
 import { MenuButton } from "common/components"
 import Switch from "@mui/material/Switch"
 import { getTheme } from "common/theme"
-import { ChangeThemeAC } from "../../../app/app-reducer"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { selectAppStatus, selectThemeMode } from "../../../app/app-selectors"
 import { LinearProgress } from "@mui/material"
 import { selectIsLoggedIn } from "../../../features/auth/model/auth-selector"
 import { logoutTC } from "../../../features/auth/model/authSlice"
+import { changeTheme } from "../../../app/appSlice"
 
 export const Header = () => {
   let themeMode = useAppSelector(selectThemeMode)
@@ -23,7 +23,7 @@ export const Header = () => {
 
   const changeModeHandler = () => {
     //setThemeMode(themeMode == 'light' ? 'dark' : 'light')
-    dispatch(ChangeThemeAC(themeMode == "light" ? "dark" : "light"))
+    dispatch(changeTheme({ theme: themeMode == "light" ? "dark" : "light" }))
   }
 
   const logoutHandler = () => {

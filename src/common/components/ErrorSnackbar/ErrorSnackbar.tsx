@@ -3,7 +3,7 @@ import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar"
 import Alert from "@mui/material/Alert"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { selectAppError } from "../../../app/app-selectors"
-import { setAppErrorAC } from "../../../app/app-reducer"
+import { setAppError } from "../../../app/appSlice"
 
 export const ErrorSnackbar = () => {
   const error = useAppSelector(selectAppError)
@@ -14,7 +14,7 @@ export const ErrorSnackbar = () => {
       return
     }
 
-    dispatch(setAppErrorAC(null))
+    dispatch(setAppError({ error: null }))
   }
 
   return (

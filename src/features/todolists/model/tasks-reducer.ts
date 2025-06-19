@@ -3,9 +3,9 @@ import { AddTodolistActionType, type clearTodosDataActionType, RemoveTodolistAct
 import type { AppDispatch } from "../../../app/store"
 import { tasksApi } from "../api/tasksApi"
 import type { DomainTask } from "../api/tasksApi.types"
-import { setAppStatusAC } from "../../../app/app-reducer"
 import { ResultCode } from "common/enums/enums"
 import { handleServerAppError, handleServerNetworkError } from "common/utils"
+import { setAppStatus } from "../../../app/appSlice"
 
 export type RemoveTaskActionType = {
   type: "REMOVE-TASK"
@@ -137,12 +137,12 @@ export const updateTaskAC = (task: DomainTask): updateTaskActionType => {
 //Thunks
 export const fetchTasksTC = (todolistId: string) => {
   return (dispatch: AppDispatch) => {
-    dispatch(setAppStatusAC("loading"))
+    dispatch(setAppStatus({ status: "loading" }))
     tasksApi
       .getTasks(todolistId)
       .then((res) => {
         dispatch(setTasksAC(todolistId, res.data.items))
-        dispatch(setAppStatusAC("succeeded"))
+        dispatch(setAppStatus({ status: "succeeded" }))
       })
       .catch((err) => {
         handleServerNetworkError(err, dispatch)
@@ -152,13 +152,13 @@ export const fetchTasksTC = (todolistId: string) => {
 
 export const removeTaskTC = (todolistId: string, taskId: string) => {
   return (dispatch: AppDispatch) => {
-    dispatch(setAppStatusAC("loading"))
+    dispatch(setAppStatus({ status: "loading" }))
     tasksApi
       .deleteTask({ todolistId, taskId })
       .then((res) => {
         if (res.data.resultCode === ResultCode.Success) {
           dispatch(removeTaskAC(todolistId, taskId))
-          dispatch(setAppStatusAC("succeeded"))
+          dispatch(setAppStatus({ status: "succeeded" }))
         } else {
           handleServerAppError(dispatch, res.data)
         }
@@ -171,13 +171,13 @@ export const removeTaskTC = (todolistId: string, taskId: string) => {
 
 export const addTaskTC = (todolistId: string, title: string) => {
   return (dispatch: AppDispatch) => {
-    dispatch(setAppStatusAC("loading"))
+    dispatch(setAppStatus({ status: "loading" }))
     tasksApi
       .createTask({ title, todolistId })
       .then((res) => {
         if (res.data.resultCode === ResultCode.Success) {
           dispatch(addTaskAC(res.data.data.item))
-          dispatch(setAppStatusAC("succeeded"))
+          dispatch(setAppStatus({ status: "succeeded" }))
         } else {
           handleServerAppError(dispatch, res.data)
         }
@@ -198,13 +198,13 @@ export const updateTaskTC = (task: DomainTask) => {
       deadline: task.deadline,
       status: task.status,
     }
-    dispatch(setAppStatusAC("loading"))
+    dispatch(setAppStatus({ status: "loading" }))
     tasksApi
       .updateTask({ taskId: task.id, todolistId: task.todoListId, model })
       .then((res) => {
         if (res.data.resultCode === ResultCode.Success) {
           dispatch(updateTaskAC(task))
-          dispatch(setAppStatusAC("succeeded"))
+          dispatch(setAppStatus({ status: "succeeded" }))
         } else {
           handleServerAppError(dispatch, res.data)
         }

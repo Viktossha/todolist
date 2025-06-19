@@ -1,12 +1,12 @@
 import type { LoginArgs } from "../api/authApi.types"
 import type { AppDispatch } from "../../../app/store"
-import { setAppStatusAC } from "../../../app/app-reducer"
 import { authApi } from "../api/authApi"
 import { ResultCode } from "common/enums/enums"
 import { handleServerAppError, handleServerNetworkError } from "common/utils"
 import { addTaskAC } from "../../todolists/model/tasks-reducer"
 import { clearTodosDataAC } from "../../todolists/model/todolists-reducer"
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
+import { setAppStatus } from "../../../app/appSlice"
 
 export const authSlice = createSlice({
   name: "auth",
@@ -41,13 +41,13 @@ export const { setIsLoggedIn, setIsInitialized } = authSlice.actions
 
 // thunks
 export const loginTC = (data: LoginArgs) => (dispatch: AppDispatch) => {
-  dispatch(setAppStatusAC("loading"))
+  dispatch(setAppStatus({ status: "loading" }))
   authApi
     .login(data)
     .then((res) => {
       if (res.data.resultCode === ResultCode.Success) {
         dispatch(setIsLoggedIn({ isLoggedIn: true }))
-        dispatch(setAppStatusAC("succeeded"))
+        dispatch(setAppStatus({ status: "succeeded" }))
         localStorage.setItem("sn-token", res.data.data.token)
       } else {
         handleServerAppError(dispatch, res.data)
@@ -59,13 +59,13 @@ export const loginTC = (data: LoginArgs) => (dispatch: AppDispatch) => {
 }
 
 export const logoutTC = () => (dispatch: AppDispatch) => {
-  dispatch(setAppStatusAC("loading"))
+  dispatch(setAppStatus({ status: "loading" }))
   authApi
     .logout()
     .then((res) => {
       if (res.data.resultCode === ResultCode.Success) {
         dispatch(setIsLoggedIn({ isLoggedIn: false }))
-        dispatch(setAppStatusAC("succeeded"))
+        dispatch(setAppStatus({ status: "succeeded" }))
         localStorage.removeItem("sn-token")
         dispatch(clearTodosDataAC())
       } else {
@@ -78,13 +78,13 @@ export const logoutTC = () => (dispatch: AppDispatch) => {
 }
 
 export const initializeAppTC = () => (dispatch: AppDispatch) => {
-  dispatch(setAppStatusAC("loading"))
+  dispatch(setAppStatus({ status: "loading" }))
   authApi
     .me()
     .then((res) => {
       if (res.data.resultCode === ResultCode.Success) {
         dispatch(setIsLoggedIn({ isLoggedIn: true }))
-        dispatch(setAppStatusAC("succeeded"))
+        dispatch(setAppStatus({ status: "succeeded" }))
       } else {
         handleServerAppError(dispatch, res.data)
       }

@@ -6,36 +6,38 @@ import { ResultCode } from "common/enums/enums"
 import { handleServerAppError, handleServerNetworkError } from "common/utils"
 import { addTaskAC } from "../../todolists/model/tasks-reducer"
 import { clearTodosDataAC } from "../../todolists/model/todolists-reducer"
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 
-type InitialStateType = typeof initialState
+export const authSlice = createSlice({
+  name: "auth",
+  initialState: {
+    isLoggedIn: false,
+    isInitialized: false,
+  },
+  // reducers: {
+  //   setIsLoggedIn: (state, action: PayloadAction<{ isLoggedIn: boolean }>) => {
+  //     state.isLoggedIn = action.payload.isLoggedIn
+  //   },
+  //   setIsInitialized: (state, action: PayloadAction<{ isInitialized: boolean }>) => {
+  //     state.isInitialized = action.payload.isInitialized
+  //   },
+  // },
 
-const initialState = {
-  isLoggedIn: false,
-  isInitialized: false,
-}
+  //другой вариант RTK 2.0
+  reducers: (create) => {
+    return {
+      setIsLoggedIn: create.reducer<{ isLoggedIn: boolean }>((state, action) => {
+        state.isLoggedIn = action.payload.isLoggedIn
+      }),
+      setIsInitialized: create.reducer<{ isInitialized: boolean }>((state, action) => {
+        state.isInitialized = action.payload.isInitialized
+      }),
+    }
+  },
+})
 
-export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
-  switch (action.type) {
-    case "SET_IS_LOGGED_IN":
-      return { ...state, isLoggedIn: action.payload.isLoggedIn }
-    case "SET_IS_INITIALIZED":
-      return { ...state, isInitialized: action.payload.isInitialized }
-
-    default:
-      return state
-  }
-}
-// Action creators
-const setIsLoggedInAC = (isLoggedIn: boolean) => {
-  return { type: "SET_IS_LOGGED_IN", payload: { isLoggedIn } } as const
-}
-
-const setIsInitializedAC = (isInitialized: boolean) => {
-  return { type: "SET_IS_INITIALIZED", payload: { isInitialized } } as const
-}
-
-// Actions types
-type ActionsType = ReturnType<typeof setIsLoggedInAC> | ReturnType<typeof setIsInitializedAC>
+export const authReducer = authSlice.reducer
+export const { setIsLoggedIn, setIsInitialized } = authSlice.actions
 
 // thunks
 export const loginTC = (data: LoginArgs) => (dispatch: AppDispatch) => {
@@ -44,7 +46,7 @@ export const loginTC = (data: LoginArgs) => (dispatch: AppDispatch) => {
     .login(data)
     .then((res) => {
       if (res.data.resultCode === ResultCode.Success) {
-        dispatch(setIsLoggedInAC(true))
+        dispatch(setIsLoggedIn({ isLoggedIn: true }))
         dispatch(setAppStatusAC("succeeded"))
         localStorage.setItem("sn-token", res.data.data.token)
       } else {
@@ -62,7 +64,7 @@ export const logoutTC = () => (dispatch: AppDispatch) => {
     .logout()
     .then((res) => {
       if (res.data.resultCode === ResultCode.Success) {
-        dispatch(setIsLoggedInAC(false))
+        dispatch(setIsLoggedIn({ isLoggedIn: false }))
         dispatch(setAppStatusAC("succeeded"))
         localStorage.removeItem("sn-token")
         dispatch(clearTodosDataAC())
@@ -81,7 +83,7 @@ export const initializeAppTC = () => (dispatch: AppDispatch) => {
     .me()
     .then((res) => {
       if (res.data.resultCode === ResultCode.Success) {
-        dispatch(setIsLoggedInAC(true))
+        dispatch(setIsLoggedIn({ isLoggedIn: true }))
         dispatch(setAppStatusAC("succeeded"))
       } else {
         handleServerAppError(dispatch, res.data)
@@ -90,5 +92,5 @@ export const initializeAppTC = () => (dispatch: AppDispatch) => {
     .catch((err) => {
       handleServerNetworkError(err, dispatch)
     })
-    .finally(() => dispatch(setIsInitializedAC(true)))
+    .finally(() => dispatch(setIsInitialized({ isInitialized: true })))
 }

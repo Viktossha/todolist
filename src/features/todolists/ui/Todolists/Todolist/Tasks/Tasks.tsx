@@ -5,7 +5,7 @@ import { FilterValuesType } from "../../../../../../app/App"
 import { useAppDispatch, useAppSelector } from "../../../../../../app/hooks"
 import { selectTasks } from "../../../../model/tasks-selectors"
 import type { DomainTodolist } from "../../../../model/todolistsSlice"
-import { fetchTasksTC } from "../../../../model/tasks-reducer"
+import { fetchTasksTC } from "../../../../model/tasksSlice"
 import type { DomainTask } from "../../../../api/tasksApi.types"
 import { TaskStatus } from "../../../../lib/enums"
 

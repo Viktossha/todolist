@@ -17,10 +17,6 @@ type ThemeMode = "dark" | "light"
 
 export type FilterValuesType = "all" | "active" | "completed"
 
-export type TasksType = {
-  [key: string]: DomainTask[]
-}
-
 function App() {
   let themeMode = useAppSelector(selectThemeMode)
   const isInitialized = useAppSelector(selectIsInitialized)

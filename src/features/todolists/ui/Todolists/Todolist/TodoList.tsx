@@ -4,7 +4,7 @@ import { TodoListHeader } from "./TodoListHeader/TodoListHeader"
 import { AddItemForm } from "common/components"
 import { Tasks } from "./Tasks/Tasks"
 import { FilterTasksButtons } from "./FilterTasksButtons/FilterTasksButtons"
-import { addTaskTC } from "../../../model/tasks-reducer"
+import { addTaskTC } from "../../../model/tasksSlice"
 import { useAppDispatch } from "../../../../../app/hooks"
 import type { DomainTodolist } from "../../../model/todolistsSlice"
 

@@ -9,8 +9,7 @@ import { getTheme } from "common/theme"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { selectAppStatus, selectThemeMode } from "../../../app/app-selectors"
 import { LinearProgress } from "@mui/material"
-import { selectIsLoggedIn } from "../../../features/auth/model/auth-selector"
-import { logoutTC } from "../../../features/auth/model/authSlice"
+import { logoutTC, selectIsLoggedIn } from "../../../features/auth/model/authSlice"
 import { changeTheme } from "../../../app/appSlice"
 
 export const Header = () => {

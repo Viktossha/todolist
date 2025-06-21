@@ -3,9 +3,8 @@ import type { AppDispatch } from "../../../app/store"
 import { authApi } from "../api/authApi"
 import { ResultCode } from "common/enums/enums"
 import { handleServerAppError, handleServerNetworkError } from "common/utils"
-import { addTaskAC } from "../../todolists/model/tasks-reducer"
-import { clearTodosDataAC } from "../../todolists/model/todolists-reducer"
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
+import { clearTodolist } from "../../todolists/model/todolistsSlice"
+import { createSlice } from "@reduxjs/toolkit"
 import { setAppStatus } from "../../../app/appSlice"
 
 export const authSlice = createSlice({
@@ -67,7 +66,7 @@ export const logoutTC = () => (dispatch: AppDispatch) => {
         dispatch(setIsLoggedIn({ isLoggedIn: false }))
         dispatch(setAppStatus({ status: "succeeded" }))
         localStorage.removeItem("sn-token")
-        dispatch(clearTodosDataAC())
+        dispatch(clearTodolist())
       } else {
         handleServerAppError(dispatch, res.data)
       }

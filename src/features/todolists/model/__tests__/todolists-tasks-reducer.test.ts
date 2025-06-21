@@ -1,4 +1,4 @@
-import { addTodoListAC, type DomainTodolist, todolistsReducer } from "../todolists-reducer"
+import { addTodoListAC, type DomainTodolist, todolistsReducer } from "../todolistsSlice"
 import { tasksReducer } from "../tasks-reducer"
 import type { TasksType } from "../../../../app/App"
 import { v1 } from "uuid"

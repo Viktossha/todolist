@@ -1,5 +1,5 @@
 import { TasksType } from "../../../app/App"
-import { AddTodolistActionType, type clearTodosDataActionType, RemoveTodolistActionType } from "./todolists-reducer"
+import {} from "./todolistsSlice"
 import type { AppDispatch } from "../../../app/store"
 import { tasksApi } from "../api/tasksApi"
 import type { DomainTask } from "../api/tasksApi.types"
@@ -37,14 +37,7 @@ export type setTasksActionType = {
   }
 }
 
-type ActionsType =
-  | RemoveTaskActionType
-  | AddTaskActionType
-  | updateTaskActionType
-  | AddTodolistActionType
-  | RemoveTodolistActionType
-  | setTasksActionType
-  | clearTodosDataActionType
+type ActionsType = RemoveTaskActionType | AddTaskActionType | updateTaskActionType | setTasksActionType | any
 
 export let initialTasksState: TasksType = {}
 

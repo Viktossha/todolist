@@ -6,7 +6,7 @@ import { Tasks } from "./Tasks/Tasks"
 import { FilterTasksButtons } from "./FilterTasksButtons/FilterTasksButtons"
 import { addTaskTC } from "../../../model/tasks-reducer"
 import { useAppDispatch } from "../../../../../app/hooks"
-import type { DomainTodolist } from "../../../model/todolists-reducer"
+import type { DomainTodolist } from "../../../model/todolistsSlice"
 
 type TodoListPropsType = {
   todolist: DomainTodolist

@@ -1,7 +1,7 @@
 import React, { useCallback } from "react"
 import Box from "@mui/material/Box"
 import { type FilterValuesType } from "../../../../../../app/App"
-import { changeFilterAC, type DomainTodolist } from "../../../../model/todolists-reducer"
+import { type DomainTodolist, updateTodolistFilter } from "../../../../model/todolistsSlice"
 import Button, { ButtonProps } from "@mui/material/Button"
 import { useAppDispatch } from "../../../../../../app/hooks"
 import { filterButtonsContainerSx } from "./FilterTasksButtons.styles"
@@ -15,7 +15,7 @@ export const FilterTasksButtons = ({ todolist }: Props) => {
 
   const changeFilter = useCallback(
     (todoListId: string, filterValue: FilterValuesType) => {
-      dispatch(changeFilterAC(todoListId, filterValue))
+      dispatch(updateTodolistFilter({ id: todoListId, filter: filterValue }))
     },
     [dispatch],
   )

@@ -7,7 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import { removeTaskTC, updateTaskTC } from "../../../../../model/tasks-reducer"
 import { useAppDispatch } from "../../../../../../../app/hooks"
 import { getListItemSX } from "./Task.styles"
-import type { DomainTodolist } from "../../../../../model/todolists-reducer"
+import type { DomainTodolist } from "../../../../../model/todolistsSlice"
 import type { DomainTask } from "../../../../../api/tasksApi.types"
 import { TaskStatus } from "../../../../../lib/enums"
 

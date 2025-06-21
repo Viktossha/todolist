@@ -1,5 +1,5 @@
 import { addTaskAC, removeTaskAC, tasksReducer, updateTaskAC, updateTaskTC } from "../tasks-reducer"
-import { addTodoListAC, removeTodoListAC } from "../todolists-reducer"
+import { addTodoListAC, removeTodoListAC } from "../todolistsSlice"
 import type { TasksType } from "../../../../app/App"
 import { TaskStatus } from "../../lib/enums"
 

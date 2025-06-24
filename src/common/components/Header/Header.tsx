@@ -7,10 +7,9 @@ import { MenuButton } from "common/components"
 import Switch from "@mui/material/Switch"
 import { getTheme } from "common/theme"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { selectAppStatus, selectThemeMode } from "../../../app/app-selectors"
 import { LinearProgress } from "@mui/material"
 import { logoutTC, selectIsLoggedIn } from "../../../features/auth/model/authSlice"
-import { changeTheme } from "../../../app/appSlice"
+import { changeTheme, selectAppStatus, selectThemeMode } from "../../../app/appSlice"
 
 export const Header = () => {
   let themeMode = useAppSelector(selectThemeMode)

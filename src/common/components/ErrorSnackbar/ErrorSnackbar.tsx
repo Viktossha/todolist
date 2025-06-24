@@ -2,8 +2,7 @@ import * as React from "react"
 import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar"
 import Alert from "@mui/material/Alert"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { selectAppError } from "../../../app/app-selectors"
-import { setAppError } from "../../../app/appSlice"
+import { selectAppError, setAppError } from "../../../app/appSlice"
 
 export const ErrorSnackbar = () => {
   const error = useAppSelector(selectAppError)

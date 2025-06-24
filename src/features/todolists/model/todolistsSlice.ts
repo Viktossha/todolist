@@ -1,7 +1,7 @@
 import type { FilterValuesType } from "../../../app/App"
 import type { Todolist } from "../api/todolistsApi.types"
 import { todolistsApi } from "../api/todolistsApi"
-import type { AppDispatch } from "../../../app/store"
+import type { AppDispatch, RootState } from "../../../app/store"
 import { type RequestStatus, setAppStatus } from "../../../app/appSlice"
 import { ResultCode } from "common/enums/enums"
 import { handleServerAppError, handleServerNetworkError } from "common/utils"
@@ -42,6 +42,9 @@ export const todolistsSlice = createSlice({
       }),
     }
   },
+  selectors: {
+    selectTodolists: (state): DomainTodolist[] => state,
+  },
 })
 
 export const todolistsReducer = todolistsSlice.reducer
@@ -54,6 +57,8 @@ export const {
   updateTodolistTitle,
   addTodolist,
 } = todolistsSlice.actions
+
+export const { selectTodolists } = todolistsSlice.selectors
 
 export type DomainTodolist = Todolist & {
   filter: FilterValuesType

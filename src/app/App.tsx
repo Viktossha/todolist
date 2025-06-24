@@ -5,11 +5,11 @@ import CssBaseline from "@mui/material/CssBaseline"
 import { getTheme } from "common/theme"
 import { ErrorSnackbar, Header } from "common/components"
 import { useAppDispatch, useAppSelector } from "./hooks"
-import { selectThemeMode } from "./app-selectors"
 import { Routing } from "common/routing"
 import { initializeAppTC, selectIsInitialized } from "../features/auth/model/authSlice"
 import { CircularProgress } from "@mui/material"
 import s from "./App.module.css"
+import { selectThemeMode } from "./appSlice"
 
 type ThemeMode = "dark" | "light"
 

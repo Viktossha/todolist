@@ -1,4 +1,4 @@
-import type { AppDispatch } from "../../../app/store"
+import type { AppDispatch, RootState } from "../../../app/store"
 import { tasksApi } from "../api/tasksApi"
 import type { DomainTask } from "../api/tasksApi.types"
 import { ResultCode } from "common/enums/enums"
@@ -63,10 +63,14 @@ export const tasksSlice = createSlice({
         delete state[action.payload.id]
       })
   },
+  selectors: {
+    selectTasks: (state): TasksType => state,
+  },
 })
 
 export const { addTask, clearTasks, removeTask, updateTask, setTasks } = tasksSlice.actions
 export const tasksReducer = tasksSlice.reducer
+export const { selectTasks } = tasksSlice.selectors
 
 //Thunks
 export const fetchTasksTC = (todolistId: string) => {

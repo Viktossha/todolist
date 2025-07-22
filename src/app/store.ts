@@ -5,6 +5,8 @@ import { appReducer, appSlice } from "./appSlice"
 import { type ThunkDispatch } from "redux-thunk"
 import { authReducer, authSlice } from "../features/auth/model/authSlice"
 import { configureStore } from "@reduxjs/toolkit"
+import { todolistsApi } from "../features/todolists/api/todolistsApi"
+import { setupListeners } from "@reduxjs/toolkit/query"
 
 // непосредственно создаём store
 export const store = configureStore({
@@ -13,8 +15,12 @@ export const store = configureStore({
     [todolistsSlice.name]: todolistsReducer,
     [appSlice.name]: appReducer,
     [authSlice.name]: authReducer,
+    [todolistsApi.reducerPath]: todolistsApi.reducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(todolistsApi.middleware),
 })
+
+setupListeners(store.dispatch)
 
 // определить автоматически тип всего объекта состояния
 export type RootState = ReturnType<typeof store.getState>

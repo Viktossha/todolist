@@ -1,6 +1,6 @@
 import type { FilterValuesType } from "../../../app/App"
 import type { Todolist } from "../api/todolistsApi.types"
-import { todolistsApi } from "../api/todolistsApi"
+import { _todolistsApi, todolistsApi } from "../api/todolistsApi"
 import type { AppDispatch, RootState } from "../../../app/store"
 import { type RequestStatus, setAppStatus } from "../../../app/appSlice"
 import { ResultCode } from "common/enums/enums"
@@ -69,7 +69,7 @@ export type DomainTodolist = Todolist & {
 export const fetchTodolistsTC = () => {
   return (dispatch: AppDispatch) => {
     dispatch(setAppStatus({ status: "loading" }))
-    todolistsApi
+    _todolistsApi
       .getTodolists()
       .then((res) => {
         dispatch(setTodolists({ todolists: res.data }))
@@ -82,7 +82,7 @@ export const fetchTodolistsTC = () => {
 export const addTodolistTC = (title: string) => {
   return (dispatch: AppDispatch) => {
     dispatch(setAppStatus({ status: "loading" }))
-    todolistsApi
+    _todolistsApi
       .createTodolist(title)
       .then((res) => {
         if (res.data.resultCode === ResultCode.Success) {
@@ -102,7 +102,7 @@ export const removeTodolistTC = (id: string) => {
   return (dispatch: AppDispatch) => {
     dispatch(setAppStatus({ status: "loading" }))
     dispatch(updateTodolistEntityStatus({ id, entityStatus: "loading" }))
-    todolistsApi
+    _todolistsApi
       .deleteTodolist(id)
       .then((res) => {
         if (res.data.resultCode === ResultCode.Success) {
@@ -122,7 +122,7 @@ export const removeTodolistTC = (id: string) => {
 export const updateTodolistTitleTC = (arg: { id: string; title: string }) => {
   return (dispatch: AppDispatch) => {
     dispatch(setAppStatus({ status: "loading" }))
-    todolistsApi
+    _todolistsApi
       .updateTodolist(arg)
       .then((res) => {
         if (res.data.resultCode === ResultCode.Success) {

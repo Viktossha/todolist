@@ -8,18 +8,17 @@ import { useAppDispatch, useAppSelector } from "./hooks"
 import { useNavigate } from "react-router"
 import { Path } from "common/routing"
 import { selectIsLoggedIn } from "../features/auth/model/authSlice"
+import { useCreateTodolistMutation } from "../features/todolists/api/todolistsApi"
 
 export const Main = () => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
-  let dispatch = useAppDispatch()
+  const [createTodolist] = useCreateTodolistMutation()
 
-  const addTodoList = useCallback(
-    (title: string) => {
-      dispatch(addTodolistTC(title))
-    },
-    [dispatch],
-  )
+  const addTodoList = (title: string) => {
+    createTodolist(title)
+  }
+
   const navigate = useNavigate()
 
   useEffect(() => {

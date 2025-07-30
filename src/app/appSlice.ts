@@ -1,11 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit"
-import type { LoginArgs } from "../features/auth/api/authApi.types"
-import type { AppDispatch } from "./store"
-import { _authApi } from "../features/auth/api/authApi"
-import { ResultCode } from "common/enums/enums"
-import { handleServerAppError, handleServerNetworkError } from "common/utils"
-import { clearTasks } from "../features/todolists/model/tasksSlice"
-import { clearTodolist } from "../features/todolists/model/todolistsSlice"
 
 export type ThemeMode = "dark" | "light"
 export type RequestStatus = "idle" | "loading" | "succeeded" | "failed"
@@ -46,41 +39,3 @@ export const appReducer = appSlice.reducer
 export const { setAppStatus, setAppError, changeTheme, setIsLoggedIn } = appSlice.actions
 export const { selectThemeMode, selectAppStatus, selectAppError, selectIsLoggedIn } = appSlice.selectors
 export type AppInitialState = ReturnType<typeof appSlice.getInitialState>
-
-export const loginTC = (data: LoginArgs) => (dispatch: AppDispatch) => {
-  dispatch(setAppStatus({ status: "loading" }))
-  _authApi
-    .login(data)
-    .then((res) => {
-      if (res.data.resultCode === ResultCode.Success) {
-        dispatch(setIsLoggedIn({ isLoggedIn: true }))
-        dispatch(setAppStatus({ status: "succeeded" }))
-        localStorage.setItem("sn-token", res.data.data.token)
-      } else {
-        handleServerAppError(dispatch, res.data)
-      }
-    })
-    .catch((err) => {
-      handleServerNetworkError(err, dispatch)
-    })
-}
-
-export const logoutTC = () => (dispatch: AppDispatch) => {
-  dispatch(setAppStatus({ status: "loading" }))
-  _authApi
-    .logout()
-    .then((res) => {
-      if (res.data.resultCode === ResultCode.Success) {
-        dispatch(setIsLoggedIn({ isLoggedIn: false }))
-        dispatch(setAppStatus({ status: "succeeded" }))
-        localStorage.removeItem("sn-token")
-        dispatch(clearTasks())
-        dispatch(clearTodolist())
-      } else {
-        handleServerAppError(dispatch, res.data)
-      }
-    })
-    .catch((err) => {
-      handleServerNetworkError(err, dispatch)
-    })
-}

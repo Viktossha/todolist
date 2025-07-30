@@ -13,7 +13,7 @@ import s from "./Login.module.css"
 import { useNavigate } from "react-router"
 import { Path } from "common/routing"
 import { useEffect } from "react"
-import { selectIsLoggedIn, selectThemeMode, loginTC, setIsLoggedIn, setAppStatus } from "../../../../app/appSlice"
+import { selectIsLoggedIn, selectThemeMode, setIsLoggedIn } from "../../../../app/appSlice"
 import { useLoginMutation } from "../../api/authApi"
 import { ResultCode } from "common/enums/enums"
 

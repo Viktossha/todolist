@@ -7,26 +7,19 @@ import { FilterTasksButtons } from "./FilterTasksButtons/FilterTasksButtons"
 import { addTaskTC } from "../../../model/tasksSlice"
 import { useAppDispatch } from "../../../../../app/hooks"
 import type { DomainTodolist } from "../../../model/todolistsSlice"
+import {useCreateTaskMutation} from "../../../api/tasksApi";
 
 type TodoListPropsType = {
   todolist: DomainTodolist
 }
 
-// export type TaskType = {
-//   id: string
-//   title: string
-//   isDone: boolean
-// }
-
 export const TodoList = React.memo(({ todolist }: TodoListPropsType) => {
-  let dispatch = useAppDispatch()
 
-  const addTask = useCallback(
-    (title: string) => {
-      dispatch(addTaskTC(todolist.id, title))
-    },
-    [dispatch],
-  )
+    const [createTask] = useCreateTaskMutation()
+
+  const addTask = (title: string) => {
+      createTask({title, todolistId: todolist.id})
+    }
 
   return (
     <div className="todolist">

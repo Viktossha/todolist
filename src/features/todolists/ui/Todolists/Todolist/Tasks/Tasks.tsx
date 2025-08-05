@@ -1,20 +1,17 @@
-import React, { useEffect } from "react"
+import React from "react"
 import List from "@mui/material/List"
-import { Task } from "./Task/Task"
-import { FilterValuesType } from "../../../../../../app/App"
-import { useAppDispatch, useAppSelector } from "../../../../../../app/hooks"
-import type { DomainTodolist } from "../../../../model/todolistsSlice"
-import { fetchTasksTC, selectTasks } from "../../../../model/tasksSlice"
-import type { DomainTask } from "../../../../api/tasksApi.types"
-import { TaskStatus } from "../../../../lib/enums"
-import { useGetTasksQuery } from "../../../../api/tasksApi"
+import {Task} from "./Task/Task"
+import {FilterValuesType} from "../../../../../../app/App"
+import type {DomainTodolist} from "../../../../model/todolistsSlice"
+import type {DomainTask} from "../../../../api/tasksApi.types"
+import {TaskStatus} from "../../../../lib/enums"
+import {useGetTasksQuery} from "../../../../api/tasksApi"
 
 type Props = {
   todolist: DomainTodolist
 }
 
 export const Tasks = ({ todolist }: Props) => {
-  const dispatch = useAppDispatch()
 
   const { data } = useGetTasksQuery(todolist.id)
 

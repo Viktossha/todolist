@@ -18,7 +18,7 @@ export const Tasks = ({ todolist }: Props) => {
 
   const { data } = useGetTasksQuery(todolist.id)
 
-  const getFilteredTasks = (allTasks: DomainTask[], currentFilter: FilterValuesType): DomainTask[] => {
+  const getFilteredTasks = (allTasks: DomainTask[]=[], currentFilter: FilterValuesType): DomainTask[] => {
     switch (currentFilter) {
       case "active":
         return allTasks.filter((t) => t.status === TaskStatus.New)

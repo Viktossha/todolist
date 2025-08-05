@@ -7,19 +7,16 @@ import type { DomainTodolist } from "../../../../model/todolistsSlice"
 import { fetchTasksTC, selectTasks } from "../../../../model/tasksSlice"
 import type { DomainTask } from "../../../../api/tasksApi.types"
 import { TaskStatus } from "../../../../lib/enums"
+import { useGetTasksQuery } from "../../../../api/tasksApi"
 
 type Props = {
   todolist: DomainTodolist
 }
 
 export const Tasks = ({ todolist }: Props) => {
-  let tasks = useAppSelector(selectTasks)
-
   const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    dispatch(fetchTasksTC(todolist.id))
-  }, [])
+  const { data } = useGetTasksQuery(todolist.id)
 
   const getFilteredTasks = (allTasks: DomainTask[], currentFilter: FilterValuesType): DomainTask[] => {
     switch (currentFilter) {
@@ -32,7 +29,7 @@ export const Tasks = ({ todolist }: Props) => {
     }
   }
 
-  const tasksForTodolists = getFilteredTasks(tasks[todolist.id], todolist.filter)
+  const tasksForTodolists = getFilteredTasks(data?.items, todolist.filter)
 
   return (
     <>

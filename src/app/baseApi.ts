@@ -9,6 +9,6 @@ export const baseApi = createApi({
       headers.set("Authorization", `Bearer ${localStorage.getItem("sn-token")}`)
     },
   }),
-  tagTypes: ["Todolist"],
+  tagTypes: ["Todolist", "Task"],
   endpoints: () => ({}),
 })

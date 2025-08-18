@@ -27,6 +27,33 @@ export const appSlice = createSlice({
       }),
     }
   },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(
+        (action) => {
+          return action.type.endsWith("/pending")
+        },
+        (state, action) => {
+          state.status = "loading"
+        },
+      )
+      .addMatcher(
+        (action) => {
+          return action.type.endsWith("/fulfilled")
+        },
+        (state, action) => {
+          state.status = "succeeded"
+        },
+      )
+      .addMatcher(
+        (action) => {
+          return action.type.endsWith("/rejected")
+        },
+        (state, action) => {
+          state.status = "failed"
+        },
+      )
+  },
   selectors: {
     selectThemeMode: (state) => state.themeMode,
     selectAppStatus: (state) => state.status,

@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit"
 
 export type ThemeMode = "dark" | "light"
 export type RequestStatus = "idle" | "loading" | "succeeded" | "failed"
@@ -29,30 +29,15 @@ export const appSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addMatcher(
-        (action) => {
-          return action.type.endsWith("/pending")
-        },
-        (state, action) => {
-          state.status = "loading"
-        },
-      )
-      .addMatcher(
-        (action) => {
-          return action.type.endsWith("/fulfilled")
-        },
-        (state, action) => {
-          state.status = "succeeded"
-        },
-      )
-      .addMatcher(
-        (action) => {
-          return action.type.endsWith("/rejected")
-        },
-        (state, action) => {
-          state.status = "failed"
-        },
-      )
+      .addMatcher(isPending, (state, action) => {
+        state.status = "loading"
+      })
+      .addMatcher(isFulfilled, (state, action) => {
+        state.status = "succeeded"
+      })
+      .addMatcher(isRejected, (state, action) => {
+        state.status = "failed"
+      })
   },
   selectors: {
     selectThemeMode: (state) => state.themeMode,

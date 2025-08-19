@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import { setAppError } from "./appSlice"
+import { handleError } from "common/utils"
 
 export const baseApi = createApi({
   reducerPath: "todolistsApi",
@@ -13,19 +13,7 @@ export const baseApi = createApi({
       },
     })(args, api, extraOptions)
 
-    if (result.error) {
-      if (result.error.status === "FETCH_ERROR" || result.error.status === "PARSING_ERROR") {
-        api.dispatch(setAppError({ error: result.error.error }))
-      }
-
-      if (result.error.status === 400 || result.error.status === 500) {
-        api.dispatch(setAppError({ error: (result.error.data as { message: string }).message }))
-      }
-
-      if (result.error.status === 403) {
-        api.dispatch(setAppError({ error: "403 Forbidden Error. Check API-KEY" }))
-      }
-    }
+    handleError(api, result)
 
     return result
   },

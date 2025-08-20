@@ -1,5 +1,6 @@
 import { BaseQueryApi, FetchBaseQueryError, FetchBaseQueryMeta, QueryReturnValue } from "@reduxjs/toolkit/query/react"
 import { setAppError } from "../../app/appSlice"
+import { isErrorWithMessage } from "common/utils/isErrorWithMessage"
 import { ResultCode } from "common/enums/enums"
 
 export const handleError = (

@@ -14,8 +14,6 @@ import { ResultCode } from "common/enums/enums"
 
 type ThemeMode = "dark" | "light"
 
-export type FilterValuesType = "all" | "active" | "completed"
-
 function App() {
   let themeMode = useAppSelector(selectThemeMode)
   const dispatch = useAppDispatch()

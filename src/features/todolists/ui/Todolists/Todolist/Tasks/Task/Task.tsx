@@ -6,10 +6,10 @@ import IconButton from "@mui/material/IconButton"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { useAppDispatch } from "../../../../../../../app/hooks"
 import { getListItemSX } from "./Task.styles"
-import type { DomainTodolist } from "../../../../../model/todolistsSlice"
 import type { DomainTask } from "../../../../../api/tasksApi.types"
 import { TaskStatus } from "../../../../../lib/enums"
 import { useRemoveTaskMutation, useUpdateTaskMutation } from "../../../../../api/tasksApi"
+import { DomainTodolist } from "../../../../../lib/types/types"
 
 type TaskPropsType = {
   task: DomainTask

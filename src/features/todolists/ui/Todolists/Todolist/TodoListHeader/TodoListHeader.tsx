@@ -2,11 +2,11 @@ import React, { useCallback } from "react"
 import { EditableSpan } from "common/components"
 import IconButton from "@mui/material/IconButton"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { type DomainTodolist } from "../../../../model/todolistsSlice"
 import { useAppDispatch } from "../../../../../../app/hooks"
 import styles from "./TodoListHeader.module.css"
 import { todolistsApi, useDeleteTodolistMutation, useUpdateTodolistMutation } from "../../../../api/todolistsApi"
 import type { RequestStatus } from "../../../../../../app/appSlice"
+import { DomainTodolist } from "../../../../lib/types/types"
 
 type TodoListHeaderPropsType = {
   todolist: DomainTodolist

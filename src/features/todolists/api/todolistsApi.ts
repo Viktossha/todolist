@@ -49,20 +49,3 @@ export const todolistsApi = baseApi.injectEndpoints({
 
 export const { useGetTodolistsQuery, useCreateTodolistMutation, useDeleteTodolistMutation, useUpdateTodolistMutation } =
   todolistsApi
-
-export const _todolistsApi = {
-  getTodolists: () => {
-    return instance.get<Todolist[]>("todo-lists")
-  },
-  createTodolist: (title: string) => {
-    return instance.post<Response<{ item: Todolist }>>("todo-lists", { title })
-  },
-  deleteTodolist: (id: string) => {
-    return instance.delete<Response>(`todo-lists/${id}`)
-  },
-  updateTodolist: (args: { id: string; title: string }) => {
-    return instance.put<Response>(`todo-lists/${args.id}`, {
-      title: args.title,
-    })
-  },
-}

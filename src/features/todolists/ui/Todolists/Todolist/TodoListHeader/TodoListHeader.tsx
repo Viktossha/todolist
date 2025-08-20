@@ -12,7 +12,6 @@ type TodoListHeaderPropsType = {
   todolist: DomainTodolist
 }
 export const TodoListHeader = ({ todolist }: TodoListHeaderPropsType) => {
-  const dispatch = useAppDispatch()
   const [updateTodolist] = useUpdateTodolistMutation()
   const updateTodoListTitle = (newTitle: string) => {
     updateTodolist({ id: todolist.id, title: newTitle })
@@ -20,21 +19,8 @@ export const TodoListHeader = ({ todolist }: TodoListHeaderPropsType) => {
 
   const [deleteTodolist] = useDeleteTodolistMutation()
 
-  const updateQueryData = (status: RequestStatus) => {
-    dispatch(
-      todolistsApi.util.updateQueryData("getTodolists", undefined, (state) => {
-        const todo = state.find((todo) => todo.id === todolist.id)
-        if (todo) todo.entityStatus = status
-      }),
-    )
-  }
   const removeTodoList = () => {
-    updateQueryData("loading")
     deleteTodolist(todolist.id)
-      .unwrap()
-      .catch(() => {
-        updateQueryData("failed")
-      })
   }
 
   return (

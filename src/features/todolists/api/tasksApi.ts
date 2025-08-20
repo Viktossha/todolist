@@ -18,7 +18,7 @@ export const tasksApi = baseApi.injectEndpoints({
             body: { title },
           }
         },
-        invalidatesTags: ['Task']
+        invalidatesTags: ["Task"],
       }),
       removeTask: builder.mutation<Response, { todolistId: string; taskId: string }>({
         query: ({ todolistId, taskId }) => {
@@ -27,9 +27,12 @@ export const tasksApi = baseApi.injectEndpoints({
             url: `todo-lists/${todolistId}/tasks/${taskId}`,
           }
         },
-        invalidatesTags: ['Task']
+        invalidatesTags: ["Task"],
       }),
-      updateTask: builder.mutation<Response<{ item: DomainTask }>, { todolistId: string; taskId: string; model: UpdateTaskModel }>({
+      updateTask: builder.mutation<
+        Response<{ item: DomainTask }>,
+        { todolistId: string; taskId: string; model: UpdateTaskModel }
+      >({
         query: ({ todolistId, taskId, model }) => {
           return {
             method: "PUT",
@@ -37,30 +40,10 @@ export const tasksApi = baseApi.injectEndpoints({
             body: model,
           }
         },
-        invalidatesTags: ['Task']
+        invalidatesTags: ["Task"],
       }),
     }
   },
 })
 
 export const { useGetTasksQuery, useCreateTaskMutation, useRemoveTaskMutation, useUpdateTaskMutation } = tasksApi
-
-export const _tasksApi = {
-  getTasks(todolistId: string) {
-    return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`)
-  },
-  createTask(payload: { title: string; todolistId: string }) {
-    return instance.post<Response<{ item: DomainTask }>>(`todo-lists/${payload.todolistId}/tasks`, {
-      title: payload.title,
-    })
-  },
-  deleteTask(payload: { todolistId: string; taskId: string }) {
-    return instance.delete<Response>(`todo-lists/${payload.todolistId}/tasks/${payload.taskId}`)
-  },
-  updateTask(payload: { todolistId: string; taskId: string; model: UpdateTaskModel }) {
-    return instance.put<Response<{ item: DomainTask }>>(
-      `todo-lists/${payload.todolistId}/tasks/${payload.taskId}`,
-      payload.model,
-    )
-  },
-}

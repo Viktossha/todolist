@@ -1,14 +1,20 @@
 import type { DomainTask, GetTasksResponse, UpdateTaskModel } from "./tasksApi.types"
 import type { Response } from "common/types"
-import { instance } from "common/instance"
 import { baseApi } from "../../../app/baseApi"
+
+export const PAGE_SIZE = 4
 
 export const tasksApi = baseApi.injectEndpoints({
   endpoints: (builder) => {
     return {
-      getTasks: builder.query<GetTasksResponse, string>({
-        query: (todolistId) => `todo-lists/${todolistId}/tasks`,
-        providesTags: (result, error, todolistId) =>
+      getTasks: builder.query<GetTasksResponse, { todolistId: string; args: { page: number } }>({
+        query: ({ todolistId, args }) => {
+          return {
+            url: `todo-lists/${todolistId}/tasks`,
+            params: { ...args, count: PAGE_SIZE },
+          }
+        },
+        providesTags: (result, error, { todolistId }) =>
           result
             ? [...result.items.map(({ id }) => ({ type: "Task", id }) as const), { type: "Task", id: todolistId }]
             : ["Task"],

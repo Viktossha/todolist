@@ -3,7 +3,7 @@ import List from "@mui/material/List"
 import { Task } from "./Task/Task"
 import type { DomainTask } from "../../../../api/tasksApi.types"
 import { TaskStatus } from "../../../../lib/enums"
-import { useGetTasksQuery } from "../../../../api/tasksApi"
+import { PAGE_SIZE, useGetTasksQuery } from "../../../../api/tasksApi"
 import { TasksSkeleton } from "../../../skeletons/TasksSkeleton/TasksSkeleton"
 import { DomainTodolist, FilterValues } from "../../../../lib/types/types"
 import { TasksPagination } from "../TasksPagination/TasksPagination"
@@ -45,7 +45,9 @@ export const Tasks = ({ todolist }: Props) => {
               return <Task key={t.id} task={t} todolist={todolist} />
             })}
           </List>
-          <TasksPagination totalCount={data?.totalCount || 0} page={page} setPage={setPage} />
+          {PAGE_SIZE < (data?.totalCount || 0) && (
+            <TasksPagination totalCount={data?.totalCount || 0} page={page} setPage={setPage} />
+          )}
         </>
       )}
     </>

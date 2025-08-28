@@ -21,7 +21,7 @@ export const EditableSpan = React.memo(({ oldTitle, className, updateTitle, disa
 
   const changeTaskTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTitle(e.currentTarget.value)
-    if (newTitle.length < 30) {
+    if (e.currentTarget.value.length < 16) {
       setInputError(false)
     } else {
       setInputError(true)

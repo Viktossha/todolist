@@ -9,9 +9,9 @@ type EditableSpanPropsType = {
 }
 
 export const EditableSpan = React.memo(({ oldTitle, className, updateTitle, disabled }: EditableSpanPropsType) => {
-  //console.log('EditableSpan')
   const [edit, setEdit] = useState(false)
   const [newTitle, setNewTitle] = useState(oldTitle)
+  const [inputError, setInputError] = useState<boolean>(false)
 
   const editModeHandler = () => {
     if (disabled) return
@@ -21,21 +21,31 @@ export const EditableSpan = React.memo(({ oldTitle, className, updateTitle, disa
 
   const changeTaskTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTitle(e.currentTarget.value)
+    if (newTitle.length < 30) {
+      setInputError(false)
+    } else {
+      setInputError(true)
+    }
   }
 
   const updateTitleHandler = () => {
-    updateTitle(newTitle)
+    !inputError && updateTitle(newTitle)
   }
 
   return edit ? (
-    <TextField
-      variant={"outlined"}
-      value={newTitle}
-      size={"small"}
-      autoFocus
-      onChange={changeTaskTitleHandler}
-      onBlur={editModeHandler}
-    />
+    <>
+      <TextField
+        variant={"outlined"}
+        value={newTitle}
+        size={"small"}
+        autoFocus
+        onChange={changeTaskTitleHandler}
+        onBlur={editModeHandler}
+        helperText={inputError && "Task title is long"}
+        className={inputError ? "input-error" : ""}
+        error={inputError}
+      />
+    </>
   ) : (
     <span className={className} onDoubleClick={editModeHandler}>
       {oldTitle}

@@ -9,23 +9,30 @@ type AddItemFormPropsType = {
 }
 
 export const AddItemForm = React.memo(({ addItem, disabled }: AddItemFormPropsType) => {
-  //console.log('AddItemForm')
-  const [taskTitle, setTaskTitle] = useState("")
-  const [inputError, setInputError] = useState<boolean>(false)
+  const [title, setTitle] = useState("")
+  const [inputError, setInputError] = useState<string>("")
 
   const addNewTaskHandler = () => {
-    const trimmedTaskTitle = taskTitle.trim()
-    if (trimmedTaskTitle) {
+    const trimmedTaskTitle = title.trim()
+
+    if (trimmedTaskTitle && trimmedTaskTitle.length <= 15) {
       addItem(trimmedTaskTitle)
+      setTitle("")
+    } else if (trimmedTaskTitle.length > 15) {
+      setInputError("Title is long")
     } else {
-      setInputError(true)
+      setInputError("Please, enter a title")
     }
-    setTaskTitle("")
   }
 
   const setTaskTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    inputError && setInputError(false)
-    setTaskTitle(e.currentTarget.value)
+    inputError && setInputError("")
+    setTitle(e.currentTarget.value)
+    if (e.currentTarget.value.length > 15) {
+      setInputError("Title is long")
+    } else {
+      setInputError("")
+    }
   }
 
   const onKeyDownAddNewTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -34,26 +41,27 @@ export const AddItemForm = React.memo(({ addItem, disabled }: AddItemFormPropsTy
     }
   }
 
-  const isAddTaskPossible = taskTitle.length && taskTitle.length <= 15
+  const isAddTaskPossible = title.length && title.length <= 15
 
   return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <TextField
-        label="Enter a title"
-        variant={"outlined"}
-        className={inputError ? "input-error" : ""}
-        error={inputError}
-        value={taskTitle}
-        size={"small"}
-        onChange={setTaskTitleHandler}
-        onKeyDown={onKeyDownAddNewTaskHandler}
-        helperText={inputError && "Please, enter a title"}
-        disabled={disabled}
-      />
-      <IconButton onClick={addNewTaskHandler} disabled={disabled || !isAddTaskPossible} color={"primary"}>
-        <AddBoxIcon />
-      </IconButton>
-      {taskTitle.length > 15 && <div>Task title is long</div>}
+    <div>
+      <div>
+        <TextField
+          label="Enter a title"
+          variant={"outlined"}
+          className={inputError ? "input-error" : ""}
+          error={inputError.length > 0}
+          value={title}
+          size={"small"}
+          onChange={setTaskTitleHandler}
+          onKeyDown={onKeyDownAddNewTaskHandler}
+          helperText={inputError.length > 0 && inputError}
+          disabled={disabled}
+        />
+        <IconButton onClick={addNewTaskHandler} disabled={disabled || !isAddTaskPossible} color={"primary"}>
+          <AddBoxIcon />
+        </IconButton>
+      </div>
     </div>
   )
 })

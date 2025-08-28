@@ -41,7 +41,7 @@ export const EditableSpan = React.memo(({ oldTitle, className, updateTitle, disa
         autoFocus
         onChange={changeTaskTitleHandler}
         onBlur={editModeHandler}
-        helperText={inputError && "Task title is long"}
+        helperText={inputError && "Title is long"}
         className={inputError ? "input-error" : ""}
         error={inputError}
       />

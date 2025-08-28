@@ -37,7 +37,7 @@ export const AddItemForm = React.memo(({ addItem, disabled }: AddItemFormPropsTy
   const isAddTaskPossible = taskTitle.length && taskTitle.length <= 15
 
   return (
-    <div>
+    <div style={{ display: "flex", justifyContent: "space-between" }}>
       <TextField
         label="Enter a title"
         variant={"outlined"}

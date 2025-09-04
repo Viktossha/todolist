@@ -12,15 +12,16 @@ import { Controller, type SubmitHandler, useForm } from "react-hook-form"
 import s from "./Login.module.css"
 import { useNavigate } from "react-router"
 import { Path } from "common/routing"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { selectIsLoggedIn, selectThemeMode, setIsLoggedIn } from "../../../../app/appSlice"
-import { useLoginMutation } from "../../api/authApi"
+import { useLazyGetCaptchaQuery, useLoginMutation } from "../../api/authApi"
 import { ResultCode } from "common/enums/enums"
 
 type Inputs = {
   email: string
   password: string
   rememberMe: boolean
+  captcha: string
 }
 
 export const Login = () => {
@@ -32,6 +33,9 @@ export const Login = () => {
   const dispatch = useAppDispatch()
 
   const [login] = useLoginMutation()
+  const [triggerGetCaptcha, { data: captcha }] = useLazyGetCaptchaQuery()
+
+  const [showCaptcha, setShowCaptcha] = useState<boolean>(false)
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -45,14 +49,18 @@ export const Login = () => {
     reset,
     control,
     formState: { errors },
-  } = useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false } })
+  } = useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false, captcha: "" } })
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     login(data)
       .then((res) => {
         if (res.data?.resultCode === ResultCode.Success) {
           dispatch(setIsLoggedIn({ isLoggedIn: true }))
+          setShowCaptcha(false)
           localStorage.setItem("sn-token", res.data.data.token)
+        } else if (res.data?.resultCode === ResultCode.CaptchaError) {
+          setShowCaptcha(true)
+          triggerGetCaptcha()
         }
       })
       .finally(() => {
@@ -111,6 +119,10 @@ export const Login = () => {
                 })}
               />
               {errors.password && <span className={s.errorMessage}>{errors.password.message}</span>}
+              {showCaptcha && <img src={captcha?.url} alt="" />}
+              {showCaptcha && (
+                <TextField margin="normal" {...register("captcha", { required: "Symbols is required" })} />
+              )}
               <FormControlLabel
                 label={"Remember me"}
                 control={
